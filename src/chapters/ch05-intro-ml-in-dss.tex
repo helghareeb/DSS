@@ -1,0 +1,253 @@
+
+\chapter{Introduction to Machine Learning in DSS}
+\label{ch:intro-ml-in-dss}
+\section{Chapter Overview and Learning Objectives}
+
+Machine Learning (ML) has become a core analytical capability in modern Decision Support Systems (DSS). While classical DSS often relied on deterministic models, rules, and statistical analysis, many contemporary systems depend on ML for prediction, ranking, anomaly detection, and pattern discovery. However, effective DSS design requires more than training accurate models: it requires translating model outputs into \emph{decisions} while accounting for costs, uncertainty, fairness, human oversight, and operational constraints.
+
+This chapter introduces ML concepts through a DSS lens. We emphasize the end-to-end pipeline from problem formulation and data preparation to evaluation, deployment, and monitoring---and we highlight the critical step of converting predictions into actionable decision policies.
+
+\subsection*{Learning objectives}
+\addcontentsline{toc}{subsection}{Learning objectives}
+By the end of this chapter, the student should be able to:
+\begin{itemize}
+  \item Identify common ML problem types in DSS (classification, regression, ranking, anomaly detection, forecasting) and map them to decision tasks.
+  \item Formulate an ML problem appropriately, including target definition, constraints, and decision costs.
+  \item Explain key risks in data preparation for DSS (leakage, bias, missingness, non-stationarity) and mitigation strategies.
+  \item Select evaluation metrics aligned with decision objectives, including cost-sensitive evaluation and calibration.
+  \item Design a decision policy from ML outputs (thresholding, ranking, triage) with human-in-the-loop oversight.
+  \item Describe deployment patterns for ML in DSS (batch vs.\ real-time) and operational monitoring for drift and failure modes.
+\end{itemize}
+
+\section{ML Problem Types for Decision Support}
+
+\subsection{Classification}
+Classification assigns an instance to one of several categories (e.g., fraud vs.\ legitimate, high-risk vs.\ low-risk). In DSS, classification is often used for:
+\begin{itemize}
+  \item risk screening and triage,
+  \item eligibility decisions (with human review),
+  \item safety-critical alerts (with calibrated thresholds).
+\end{itemize}
+
+\subsection{Regression}
+Regression predicts a continuous value (e.g., expected demand, time-to-failure, probability of churn). Regression outputs are frequently converted to decisions using thresholds or by feeding them into optimization models.
+
+\subsection{Ranking and recommendation}
+Many DSS decisions are about \emph{prioritization}: which cases to investigate first, which patients to see next, which products to stock, which interventions to apply. Ranking models (learning-to-rank) and recommender systems directly support these tasks.
+
+\subsection{Anomaly detection}
+Anomaly detection flags unusual patterns that may indicate faults, fraud, or security incidents. DSS challenges include high false-alarm rates, sparse labels, and the need for explainable alerts.
+
+\subsection{Time-series forecasting}
+Forecasting supports planning decisions (inventory, staffing, capacity). In DSS, forecasting should include uncertainty estimates and scenario exploration, not just point predictions.
+
+\section{Data Preparation and Feature Engineering}
+
+\subsection{Data quality and preprocessing}
+Typical preprocessing steps include handling missing values, outliers, inconsistent codes, and duplicates. For DSS, data preparation must be aligned with the \emph{decision context}:
+\begin{itemize}
+  \item ensure timestamps are correct and consistent,
+  \item separate information available at decision time from information observed later,
+  \item document data provenance and known biases.
+\end{itemize}
+
+\subsection{Data leakage}
+Leakage occurs when features contain information that would not be available at the time of decision (or are causally downstream of the outcome). Leakage can produce unrealistically high performance in development and catastrophic failure in deployment. Common leakage sources include:
+\begin{itemize}
+  \item post-decision variables (e.g., ``treatment given'' used to predict outcome),
+  \item future information in time-series splits,
+  \item target-encoded features computed using full data without proper cross-validation.
+\end{itemize}
+
+\subsection{Feature engineering}
+Feature engineering transforms raw data into representations that support learning:
+\begin{itemize}
+  \item aggregations over time windows (e.g., past 30-day counts),
+  \item ratios and rates (e.g., missed payments per month),
+  \item domain-specific indicators (e.g., lab value abnormality flags),
+  \item text/image features using embeddings when needed.
+\end{itemize}
+In DSS, features should be interpretable when possible, especially in high-stakes settings.
+
+\section{Model Evaluation for Decisions}
+
+\subsection{Metric selection}
+Accuracy is rarely sufficient in DSS. Appropriate metrics depend on the decision objective:
+\begin{itemize}
+  \item \textbf{precision/recall} and $F_1$ for imbalanced detection tasks,
+  \item \textbf{AUC-ROC} and \textbf{AUC-PR} for ranking quality,
+  \item \textbf{MAE/RMSE} for regression,
+  \item \textbf{calibration} when probabilities drive decisions,
+  \item \textbf{utility-based metrics} when decisions have explicit costs/benefits.
+\end{itemize}
+
+\subsection{Cost-sensitive evaluation}
+Many DSS decisions have asymmetric costs (e.g., missing a fraud case may be worse than a false alarm). A cost matrix or expected utility framing is often more appropriate than a single generic metric.
+
+\subsection{Calibration}
+If a model outputs probabilities, calibration matters. A well-calibrated model ensures that among cases predicted with probability $0.8$, roughly 80\% of them are positive (in the long run). Calibration supports threshold selection, resource planning, and risk communication.
+
+\subsection{Threshold selection and decision curves}
+Thresholds should be chosen using:
+\begin{itemize}
+  \item decision costs and resource constraints,
+  \item target recall/safety requirements,
+  \item expected utility and scenario analysis,
+  \item subgroup performance and fairness constraints.
+\end{itemize}
+In a DSS, threshold changes should be versioned and audited like model changes.
+
+\section{From Prediction to Decision}
+
+\subsection{Decision policies}
+Common ways to convert model outputs into decisions include:
+\begin{itemize}
+  \item \textbf{thresholding}: take action if score $\ge \tau$,
+  \item \textbf{top-$k$ selection}: investigate the $k$ highest-risk cases,
+  \item \textbf{triage}: route cases into categories with different workflows,
+  \item \textbf{optimization integration}: use predictions as inputs to an optimizer.
+\end{itemize}
+
+\subsection{Human-in-the-loop oversight}
+Human oversight is often required when:
+\begin{itemize}
+  \item stakes are high (safety, finance, rights),
+  \item the model is uncertain or out-of-distribution,
+  \item fairness or legal issues are involved,
+  \item decisions require contextual judgment unavailable in data.
+\end{itemize}
+The DSS should explicitly design approval/override workflows and capture feedback to improve the system.
+
+\subsection{Explainability and actionability}
+Explanations in DSS must help users act. In practice, this often means:
+\begin{itemize}
+  \item identifying key drivers of the recommendation,
+  \item showing confidence/uncertainty,
+  \item providing counterfactual guidance (what could change the decision),
+  \item linking to relevant evidence (data provenance).
+\end{itemize}
+
+\section{Summary and Concluding Remarks}
+
+This chapter presented ML as an analytical component within DSS. We reviewed ML problem types that support decisions, highlighted data preparation risks (especially leakage), and emphasized evaluation aligned with decision objectives through cost-sensitive metrics and calibration. We then described how predictions become decisions via policies such as thresholding, ranking, triage, or optimization integration, and we stressed the importance of human-in-the-loop oversight, explainability, and operational monitoring for drift and failure modes.
+
+\section{Key Terms}
+\begin{description}[style=nextline]
+  \item[Classification / regression] ML tasks predicting discrete categories (classification) or continuous values (regression).
+  \item[Ranking (learning-to-rank)] ML approaches that order items by relevance or risk to support prioritization decisions.
+  \item[Anomaly detection] Methods that identify unusual observations that may indicate faults, fraud, or attacks.
+  \item[Time-series forecasting] Predicting future values from temporal data; often used for planning and capacity decisions.
+  \item[Data leakage] Using information during training/evaluation that would not be available at decision time, inflating performance estimates.
+  \item[Feature engineering] Transforming raw data into predictive representations (aggregations, encodings, embeddings).
+  \item[Imbalanced data] When one class is rare, making accuracy misleading and requiring appropriate metrics and sampling strategies.
+  \item[Calibration] Alignment between predicted probabilities and observed frequencies.
+  \item[Decision policy] A rule that converts model outputs into actions (thresholding, top-$k$, triage, constrained decisions).
+  \item[Drift] Changes over time in data distributions or relationships that degrade model performance (data drift, concept drift).
+  \item[Model serving] Delivering model inference operationally (batch or real-time) with reliability and monitoring.
+  \item[Model card] A documentation artifact describing intended use, performance, limitations, and risks of a model.
+\end{description}
+
+\section{Multiple-Choice Questions (MCQs)}
+
+\subsection*{Questions}
+\addcontentsline{toc}{subsection}{Questions}
+\begin{enumerate}[label=\textbf{Q\arabic*.}]
+  \item In a DSS, why is accuracy often an insufficient evaluation metric?
+  \begin{enumerate}[label=\alph*)]
+    \item Because accuracy cannot be computed for ML models
+    \item Because DSS decisions often have asymmetric costs and class imbalance
+    \item Because accuracy is only used in regression
+    \item Because accuracy guarantees fairness
+  \end{enumerate}
+
+  \item Data leakage most directly leads to:
+  \begin{enumerate}[label=\alph*)]
+    \item slower model training
+    \item inflated evaluation results and poor real-world performance
+    \item guaranteed robustness to drift
+    \item improved privacy by design
+  \end{enumerate}
+
+  \item A calibrated probability model is especially important when:
+  \begin{enumerate}[label=\alph*)]
+    \item the DSS only displays raw data tables
+    \item thresholds and resource planning depend on probability values
+    \item the task is deterministic optimization with no uncertainty
+    \item the model is never deployed
+  \end{enumerate}
+
+  \item Which policy best matches a ``limited investigator capacity'' setting?
+  \begin{enumerate}[label=\alph*)]
+    \item Always act on every positive prediction
+    \item Investigate the top-$k$ highest-risk cases
+    \item Randomly select cases to investigate
+    \item Ignore model outputs
+  \end{enumerate}
+
+  \item ``Concept drift'' refers to:
+  \begin{enumerate}[label=\alph*)]
+    \item changes in the input distribution only
+    \item changes in the relationship between inputs and outcomes
+    \item changes in dashboard colors
+    \item changes in file formats used for storage
+  \end{enumerate}
+
+  \item A human-in-the-loop workflow is most appropriate when:
+  \begin{enumerate}[label=\alph*)]
+    \item decisions are trivial and reversible
+    \item decisions are high-stakes and require contextual judgment
+    \item models are never updated
+    \item the DSS has no users
+  \end{enumerate}
+\end{enumerate}
+
+\subsection*{Answer Key}
+\addcontentsline{toc}{subsection}{Answer Key}
+\begin{enumerate}[label=\textbf{Q\arabic*.}]
+  \item b
+  \item b
+  \item b
+  \item b
+  \item b
+  \item b
+\end{enumerate}
+
+\section{Suggested DSS Projects (Academic)}
+
+\subsection{Project 1: ML-Based Triage DSS with Cost-Sensitive Thresholding}
+\textbf{Problem.} Build a DSS that triages cases (e.g., support tickets, patient referrals, fraud alerts) using an ML risk score.
+
+\textbf{Scope and components.}
+\begin{itemize}
+  \item Train a baseline classifier and a stronger model (e.g., gradient boosting).
+  \item Define a cost matrix and choose thresholds under different capacity constraints.
+  \item Evaluate calibration and produce an ``operating point'' recommendation.
+  \item Propose a human review workflow for uncertain cases.
+\end{itemize}
+
+\textbf{Deliverables.} Model evaluation, threshold/capacity analysis, and a short deployment + governance plan.
+
+\subsection{Project 2: Leakage Audit and Feature Engineering Study}
+\textbf{Problem.} Investigate how leakage and feature choices influence apparent performance.
+
+\textbf{Scope and components.}
+\begin{itemize}
+  \item Create two pipelines: one with intentional leakage and one corrected.
+  \item Compare results and explain why the leaked pipeline fails in a simulated deployment split.
+  \item Produce a feature documentation table (availability time, meaning, risk).
+\end{itemize}
+
+\textbf{Deliverables.} Experimental report, corrected pipeline, and guidelines for feature availability in DSS.
+
+\subsection{Project 3: Ranking DSS for Prioritizing Interventions}
+\textbf{Problem.} Build a ranking model to prioritize interventions (e.g., outreach to at-risk students, inspections, preventative maintenance).
+
+\textbf{Scope and components.}
+\begin{itemize}
+  \item Define a ranking objective aligned with limited resources (top-$k$ effectiveness).
+  \item Evaluate with ranking metrics (e.g., precision@$k$) and expected utility.
+  \item Design an interface that shows explanations and uncertainty for the top-ranked items.
+\end{itemize}
+
+\textbf{Deliverables.} Ranking evaluation, decision policy, and an interface mockup with explanation requirements.
+

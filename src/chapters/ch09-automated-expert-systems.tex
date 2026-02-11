@@ -1,0 +1,282 @@
+
+\chapter{Automated Decision Systems and Expert Systems}
+\label{ch:automated-decision-systems-and-expert-systems}
+\section{Chapter Overview and Learning Objectives}
+
+Some decisions can be supported by predictive models (e.g., risk scoring). Others require explicit \emph{reasoning} about policies, constraints, regulations, and domain knowledge that may not be easily captured in training data. Automated decision systems and expert systems address this need by using rule-based reasoning, knowledge representation, and structured inference. Historically, expert systems were among the earliest forms of ``intelligent'' decision support; today they remain important as \emph{guardrails} and as components of hybrid (neuro-symbolic) DSS that combine rules with machine learning.
+
+This chapter introduces automated decision systems, rule-based expert systems, and hybrid architectures that integrate symbolic reasoning with ML/DL. We emphasize when automation is appropriate, how to design human oversight, and how to maintain accountability through documentation and audit trails.
+
+\subsection*{Learning objectives}
+\addcontentsline{toc}{subsection}{Learning objectives}
+By the end of this chapter, the student should be able to:
+\begin{itemize}
+  \item Explain how rule-based systems and expert systems differ from purely data-driven ML models in DSS.
+  \item Describe core concepts in knowledge representation (facts, rules, ontologies) and inference (forward/backward chaining).
+  \item Design a simple rule base and inference process for an automated decision-support task.
+  \item Identify practical challenges of expert systems: knowledge acquisition, validation, maintenance, and brittleness.
+  \item Explain hybrid decision system patterns that combine rules with ML models and use rules as guardrails.
+  \item Distinguish \emph{decision support} from \emph{full automation} and specify when human approval is required.
+  \item Discuss ethical and organizational issues: accountability, contestability, transparency, and automation bias.
+\end{itemize}
+
+\section{Rule-Based Systems and Knowledge Representation}
+
+\subsection{Knowledge representation: facts, rules, and ontologies}
+Rule-based systems represent knowledge explicitly. Common representations include:
+\begin{itemize}
+  \item \textbf{facts}: atomic statements (e.g., \texttt{age=67}, \texttt{temperature=39.0}),
+  \item \textbf{rules}: conditional logic of the form \textbf{IF} conditions \textbf{THEN} conclusions/actions,
+  \item \textbf{ontologies}: structured domain concepts and relationships (useful for consistency and reasoning).
+\end{itemize}
+
+In DSS, rules often encode policies, clinical guidelines, business constraints, or compliance requirements.
+
+\subsection{Inference engines}
+An inference engine applies rules to facts to derive conclusions. Two primary strategies are:
+\begin{itemize}
+  \item \textbf{Forward chaining} (data-driven): start from known facts and apply rules to infer new facts until reaching a conclusion.
+  \item \textbf{Backward chaining} (goal-driven): start from a hypothesis/goal and work backward to determine which facts must be true.
+\end{itemize}
+
+\subsection{Conflict resolution}
+When multiple rules can fire, the system needs a conflict-resolution strategy, such as:
+\begin{itemize}
+  \item rule priority (salience),
+  \item specificity (more specific rules first),
+  \item recency of facts,
+  \item meta-rules (rules about rules).
+\end{itemize}
+
+\subsection{Uncertainty in rule-based reasoning}
+Many domains involve uncertainty (symptoms are ambiguous; evidence is incomplete). Approaches include:
+\begin{itemize}
+  \item certainty factors (heuristic confidence weights),
+  \item probabilistic rules (Bayesian reasoning),
+  \item fuzzy logic (degrees of membership),
+  \item hybrid: use ML probabilities as inputs to rules.
+\end{itemize}
+
+\section{Expert Systems in Practice}
+
+\subsection{Knowledge acquisition}
+The main challenge of expert systems is obtaining high-quality rules:
+\begin{itemize}
+  \item interviews with domain experts,
+  \item analysis of policies and guidelines,
+  \item mining historical cases (with caution),
+  \item iterative refinement based on user feedback.
+\end{itemize}
+
+\subsection{Validation and testing}
+Expert systems must be validated for correctness and safety:
+\begin{itemize}
+  \item unit tests for rules (expected behavior on test cases),
+  \item coverage tests (which rules fire and when),
+  \item consistency checks (no contradictory conclusions),
+  \item stakeholder review and sign-off.
+\end{itemize}
+
+\subsection{Maintenance and brittleness}
+Rules can become obsolete as policies change. Expert systems are often \textbf{brittle} when:
+\begin{itemize}
+  \item the environment changes,
+  \item exceptions are frequent,
+  \item rules interact in unexpected ways.
+\end{itemize}
+Therefore, versioning, change management, and governance are essential.
+
+\subsection{Common failure modes}
+Typical failure modes include:
+\begin{itemize}
+  \item incomplete rule coverage (important cases not handled),
+  \item conflicting rules (inconsistent recommendations),
+  \item hidden assumptions (rules encode outdated policy),
+  \item poor explainability (users cannot understand why a rule fired),
+  \item automation bias (users follow recommendations without review).
+\end{itemize}
+
+\section{Hybrid Decision Systems}
+
+\subsection{Why hybrid?}
+ML models excel at pattern recognition but may violate policies or produce unsafe recommendations. Rule-based systems encode constraints but may not capture complex patterns. Hybrid systems combine strengths:
+\begin{itemize}
+  \item ML produces predictions/scores from data,
+  \item rules encode policies, constraints, and safety checks,
+  \item the DSS integrates both into an auditable decision workflow.
+\end{itemize}
+
+\subsection{Common hybrid patterns}
+Common patterns include:
+\begin{itemize}
+  \item \textbf{Rules after ML} (guardrails): accept ML recommendation only if policy constraints hold.
+  \item \textbf{Rules before ML} (filtering): route cases to specialized models based on explicit conditions.
+  \item \textbf{Rules + ML ensemble}: combine outputs (e.g., high-risk if either rule system or ML flags).
+  \item \textbf{Optimization with ML inputs}: ML forecasts feed a prescriptive optimizer; rules ensure feasibility and compliance.
+\end{itemize}
+
+\subsection{Guardrails and ``hard constraints''}
+In high-stakes DSS, guardrails can include:
+\begin{itemize}
+  \item minimum safety thresholds (e.g., never recommend a drug with a known contraindication),
+  \item fairness constraints (e.g., review required when a protected group is affected),
+  \item legal/compliance constraints (e.g., prohibited features or decisions).
+\end{itemize}
+Guardrails should be versioned and audited like models.
+
+\section{Automation vs.\ Support}
+
+\subsection{Levels of automation}
+Automation exists on a spectrum:
+\begin{itemize}
+  \item \textbf{Advisory DSS}: provides information and recommendations; humans decide.
+  \item \textbf{Human-in-the-loop automation}: system proposes actions; humans approve or override.
+  \item \textbf{Human-on-the-loop}: system acts automatically but is supervised with the ability to intervene.
+  \item \textbf{Full automation}: system acts without human oversight (rarely appropriate in high-stakes domains).
+\end{itemize}
+
+\subsection{When human approval is required}
+Human approval is typically required when:
+\begin{itemize}
+  \item decisions are high impact (health, safety, rights, large financial consequences),
+  \item the system is uncertain or out-of-distribution,
+  \item accountability cannot be delegated ethically or legally,
+  \item explanations and contestability are needed.
+\end{itemize}
+
+\subsection{Accountability, contestability, and documentation}
+Automated decisions should be contestable: affected individuals or stakeholders should be able to ask ``why'' and receive a meaningful explanation grounded in rules, evidence, and model behavior. For organizations, this requires:
+\begin{itemize}
+  \item clear decision ownership (who is responsible),
+  \item audit trails (what happened, when, and under which model/rule version),
+  \item change management (policy updates and model updates),
+  \item incident response plans.
+\end{itemize}
+
+\section{Summary and Concluding Remarks}
+
+This chapter introduced automated decision systems and expert systems as symbolic approaches to decision support. We discussed knowledge representation (facts, rules, ontologies), inference strategies (forward and backward chaining), and practical concerns such as conflict resolution and uncertainty handling. We examined expert systems in practice, emphasizing knowledge acquisition, validation, maintenance, and failure modes. We then presented hybrid architectures that combine ML with rule-based guardrails and highlighted the spectrum from advisory DSS to full automation. Finally, we emphasized accountability, auditability, and the need for human oversight in high-stakes decisions.
+
+\section{Key Terms}
+\begin{description}[style=nextline]
+  \item[Automated decision system] A system that produces decisions or actions using algorithmic logic (rules, models, or both), sometimes with limited human involvement.
+  \item[Expert system] A knowledge-driven system that uses explicitly represented expertise (rules/knowledge base) and an inference engine to provide recommendations.
+  \item[Knowledge base] The repository of domain knowledge (facts, rules, ontologies) used by a knowledge-driven DSS.
+  \item[Rule base] The set of IF--THEN rules encoding policies or expert knowledge.
+  \item[Inference engine] The reasoning component that applies rules to facts to derive conclusions.
+  \item[Forward chaining] Data-driven inference that starts from known facts and applies rules to derive new facts.
+  \item[Backward chaining] Goal-driven inference that starts from a hypothesis and searches for supporting facts/rules.
+  \item[Conflict resolution] Strategy for deciding which rule to fire when multiple rules are applicable.
+  \item[Ontology] A structured representation of concepts and relationships in a domain, supporting consistency and reasoning.
+  \item[Fuzzy logic] Reasoning framework that supports partial truth (degrees of membership) rather than binary logic.
+  \item[Guardrails] Hard constraints or policy checks that constrain model outputs to ensure safety, legality, or fairness.
+  \item[Human-in-the-loop] A workflow where humans review, approve, or override system recommendations.
+  \item[Contestability] The ability to challenge a decision and obtain an explanation and review process.
+  \item[Audit trail] A record of data, rules/models, and actions for accountability and compliance.
+\end{description}
+
+\section{Multiple-Choice Questions (MCQs)}
+
+\subsection*{Questions}
+\addcontentsline{toc}{subsection}{Questions}
+\begin{enumerate}[label=\textbf{Q\arabic*.}]
+  \item Which component distinguishes an expert system from a typical supervised ML model?
+  \begin{enumerate}[label=\alph*)]
+    \item A feature store
+    \item An explicit knowledge/rule base and inference engine
+    \item A confusion matrix
+    \item A gradient-based optimizer
+  \end{enumerate}
+
+  \item Forward chaining is best described as:
+  \begin{enumerate}[label=\alph*)]
+    \item starting from a goal and searching backward for evidence
+    \item starting from known facts and applying rules to derive conclusions
+    \item selecting features using correlation
+    \item training a neural network by backpropagation
+  \end{enumerate}
+
+  \item A common reason expert systems become brittle is:
+  \begin{enumerate}[label=\alph*)]
+    \item rules are always probabilistic
+    \item policies and environments change, making rules outdated
+    \item they always require GPUs
+    \item they cannot be tested
+  \end{enumerate}
+
+  \item In a hybrid DSS, ``rules after ML'' typically means:
+  \begin{enumerate}[label=\alph*)]
+    \item the ML model is used only for visualization
+    \item rules act as guardrails to accept/override ML recommendations
+    \item rules generate labels for training without any constraints
+    \item rules replace monitoring
+  \end{enumerate}
+
+  \item Which automation level is most consistent with high-stakes DSS practice?
+  \begin{enumerate}[label=\alph*)]
+    \item Full automation without oversight
+    \item Human-in-the-loop where system proposes and humans approve/override
+    \item No analytics; only manual decisions
+    \item Random decisions to avoid bias
+  \end{enumerate}
+
+  \item Why are audit trails important in automated decision systems?
+  \begin{enumerate}[label=\alph*)]
+    \item They increase training accuracy automatically
+    \item They support accountability, compliance, and incident investigation
+    \item They eliminate concept drift
+    \item They replace documentation
+  \end{enumerate}
+\end{enumerate}
+
+\subsection*{Answer Key}
+\addcontentsline{toc}{subsection}{Answer Key}
+\begin{enumerate}[label=\textbf{Q\arabic*.}]
+  \item b
+  \item b
+  \item b
+  \item b
+  \item b
+  \item b
+\end{enumerate}
+
+\section{Suggested DSS Projects (Academic)}
+
+\subsection{Project 1: Rule-Based DSS for Policy Compliance Checking}
+\textbf{Problem.} Build a rule-based system that checks whether a case complies with organizational policy (e.g., procurement rules, scholarship eligibility, clinical guideline steps).
+
+\textbf{Scope and components.}
+\begin{itemize}
+  \item Design facts and rule syntax; implement forward chaining logic (can be lightweight).
+  \item Add conflict resolution and rule priority where needed.
+  \item Provide explanations: which rules fired and why.
+  \item Create unit tests for rules and a change-log process.
+\end{itemize}
+
+\textbf{Deliverables.} Rule base, explanation examples, test suite, and governance plan for rule updates.
+
+\subsection{Project 2: Hybrid DSS: ML Risk Score + Rule Guardrails}
+\textbf{Problem.} Combine an ML risk model with hard policy rules to produce safer recommendations.
+
+\textbf{Scope and components.}
+\begin{itemize}
+  \item Train a simple classifier that outputs calibrated risk probabilities.
+  \item Implement guardrails (e.g., prohibited actions, mandatory review conditions).
+  \item Compare outcomes with and without guardrails under scenarios (false positives/negatives).
+  \item Define an audit trail schema capturing model version, rule version, and final action.
+\end{itemize}
+
+\textbf{Deliverables.} Hybrid decision workflow, evaluation report, and an audit trail specification.
+
+\subsection{Project 3: Expert System Knowledge Acquisition and Maintenance Study}
+\textbf{Problem.} Study how knowledge is acquired and maintained by building a small expert system in a domain where rules exist (e.g., IT troubleshooting, course advising, library services).
+
+\textbf{Scope and components.}
+\begin{itemize}
+  \item Elicit rules from a domain expert or written policy.
+  \item Implement backward chaining for goal-directed queries (``why'' reasoning).
+  \item Create a maintenance plan: versioning, rule deprecation, and periodic review.
+\end{itemize}
+
+\textbf{Deliverables.} Knowledge acquisition report, expert system prototype, and maintenance/change-management checklist.
+

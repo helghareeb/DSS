@@ -1,0 +1,92 @@
+\documentclass[11pt,oneside]{book}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{bookmark}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{xcolor}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  citecolor=blue,
+  urlcolor=blue
+}
+
+% Simple placeholders helpers
+\newcommand{\placeholder}[1]{%
+  \par\noindent\textcolor{gray}{\textit{[Placeholder: #1]}}\par
+}
+
+\title{Decision Support Systems: A Modern Approach}
+\author{Dr.\ Haitham El-Ghareeb\\
+Associate Professor of Information Systems,\\
+Faculty of Computers and Information Sciences,\\
+Mansoura University, Egypt}
+\date{\today}
+
+\begin{document}
+
+\frontmatter
+\maketitle
+\tableofcontents
+
+\chapter*{Preface}
+\addcontentsline{toc}{chapter}{Preface}
+\placeholder{Preface text.}
+
+\chapter*{How to Use This Book}
+\addcontentsline{toc}{chapter}{How to Use This Book}
+\placeholder{Reading guidance, prerequisites, and how Python/ML/DL/AI will be used.}
+
+\mainmatter
+
+% ==========================================================
+% Chapters (matching your course-topic list)
+% ==========================================================
+
+\include{chapters/ch01-introduction}
+
+\include{chapters/ch02-decision-making-concepts}
+
+\include{chapters/ch03-technologies-environment}
+
+\include{chapters/ch04-model-management}
+
+\include{chapters/ch05-intro-ml-in-dss}
+
+\include{chapters/ch06-midterm}
+
+\include{chapters/ch07-training-classification}
+
+\include{chapters/ch08-supervised-learning}
+
+\include{chapters/ch09-automated-expert-systems}
+
+\include{chapters/ch10-business-intelligence}
+
+\backmatter
+\chapter*{Appendix A: Python Setup and Tooling}
+\addcontentsline{toc}{chapter}{Appendix A: Python Setup and Tooling}
+\placeholder{Environment setup, packages, and reproducibility.}
+
+\chapter*{Appendix B: Mathematical Background}
+\addcontentsline{toc}{chapter}{Appendix B: Mathematical Background}
+\placeholder{Probability, linear algebra, optimization basics.}
+
+\chapter*{Glossary}
+\addcontentsline{toc}{chapter}{Glossary}
+\placeholder{Terms and definitions.}
+
+\chapter*{Bibliography}
+\addcontentsline{toc}{chapter}{Bibliography}
+\placeholder{Add Bib\TeX{} file later.}
+
+\chapter*{Index}
+\addcontentsline{toc}{chapter}{Index}
+\placeholder{Index placeholder.}
+
+\end{document}

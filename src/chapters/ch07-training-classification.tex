@@ -1,0 +1,313 @@
+
+\chapter{Training of Classification Models}
+\label{ch:training-classification-models}
+\section{Chapter Overview and Learning Objectives}
+
+Classification models are widely used in Decision Support Systems (DSS) because many operational decisions naturally involve discrete outcomes: approve/decline, high/medium/low risk, urgent/non-urgent, fraud/not fraud. However, training a classification model for DSS requires careful attention to the decision context: class imbalance, asymmetric costs, calibration, subgroup performance, and the operational consequences of false alarms and missed detections.
+
+This chapter provides a practical, end-to-end view of training classification models for decision support. We cover data splitting and leakage prevention, baselines and pipelines, regularization and tuning, imbalanced learning, calibration and threshold selection, and error analysis/monitoring. The emphasis is on producing models that are deployable, auditable, and aligned with decision objectives.
+
+\subsection*{Learning objectives}
+\addcontentsline{toc}{subsection}{Learning objectives}
+By the end of this chapter, the student should be able to:
+\begin{itemize}
+  \item Define a classification objective for a DSS and specify decision costs and constraints.
+  \item Design a sound data-splitting strategy (including time-aware splits) and detect common leakage patterns.
+  \item Build baseline models and end-to-end preprocessing pipelines suitable for deployment.
+  \item Apply regularization and hyperparameter tuning and interpret the bias--variance trade-off.
+  \item Handle imbalanced data using appropriate metrics, resampling, and class weighting.
+  \item Calibrate probabilistic classifiers and select thresholds based on cost, capacity, and safety constraints.
+  \item Perform error analysis (including subgroup analysis) and design monitoring/retraining triggers for production DSS.
+\end{itemize}
+
+\section{Problem Definition and Data Splitting}
+
+\subsection{Defining labels and decision time}
+Before training, define:
+\begin{itemize}
+  \item the target label $y$ (what exactly is positive?),
+  \item the \textbf{decision point} (when the DSS recommendation is generated),
+  \item the \textbf{observation window} (which features are available up to decision time),
+  \item the \textbf{outcome window} (when the true outcome is observed).
+\end{itemize}
+Misalignment among these windows is a common source of leakage and unrealistic evaluation.
+
+\subsection{Train/validation/test and time-aware splits}
+Random splits can be misleading when data is temporal or when the environment changes. For many DSS settings (finance, health, security), a \textbf{time-based split} is more realistic: train on the past, validate on a recent period, and test on the latest period.
+
+\subsection{Cross-validation}
+Cross-validation supports robust estimation, but it must be used carefully:
+\begin{itemize}
+  \item group-aware CV (avoid leaking information across entities, e.g., multiple records per person),
+  \item time-series CV (rolling windows),
+  \item nested CV for honest hyperparameter tuning.
+\end{itemize}
+
+\subsection{Leakage detection checklist}
+Common leakage indicators:
+\begin{itemize}
+  \item surprisingly high performance for simple baselines,
+  \item features that are consequences of the outcome (post-label),
+  \item features measured after the decision,
+  \item target encoding done without proper fold separation.
+\end{itemize}
+
+\section{Baseline Models and Feature Pipelines}
+
+\subsection{Why baselines matter}
+Baselines provide:
+\begin{itemize}
+  \item a sanity check (detect leakage and data issues),
+  \item an interpretable reference point,
+  \item a deployable option when complexity is unnecessary.
+\end{itemize}
+
+\subsection{Standard baselines}
+Common baseline classifiers:
+\begin{itemize}
+  \item logistic regression (with regularization),
+  \item naive Bayes (text-heavy tasks),
+  \item decision tree (interpretable but can overfit),
+  \item simple scorecards or rule-based models (when domain rules dominate).
+\end{itemize}
+
+\subsection{Preprocessing and pipeline design}
+In production DSS, preprocessing must be identical in training and inference. Use pipelines that combine:
+\begin{itemize}
+  \item missing-value handling,
+  \item categorical encoding,
+  \item scaling (when required),
+  \item feature selection (if used),
+  \item the final estimator.
+\end{itemize}
+Pipelines reduce deployment errors and improve reproducibility.
+
+\section{Regularization and Hyperparameter Tuning}
+
+\subsection{Regularization and bias--variance}
+Regularization controls model complexity and reduces overfitting. In logistic regression, $L_1$ and $L_2$ penalties are common. In tree-based models, depth, minimum samples per leaf, and learning rates (for boosting) play similar roles.
+
+\subsection{Tuning strategies}
+Common tuning approaches:
+\begin{itemize}
+  \item grid search (systematic but expensive),
+  \item random search (often more efficient),
+  \item Bayesian optimization (sample-efficient for expensive models),
+  \item early stopping (for boosting and neural models).
+\end{itemize}
+Hyperparameters should be tuned on validation data (or via CV), then final evaluation reported on a held-out test set.
+
+\subsection{Reproducibility and experiment tracking}
+For DSS governance, track:
+\begin{itemize}
+  \item data version/snapshot,
+  \item code version,
+  \item hyperparameters,
+  \item metrics (overall and subgroup),
+  \item decision threshold and policy.
+\end{itemize}
+
+\section{Imbalanced Learning}
+
+\subsection{Why imbalance matters}
+In many DSS applications, positives are rare (fraud, failures, severe outcomes). A model can achieve high accuracy by predicting the majority class, yet be useless.
+
+\subsection{Appropriate metrics}
+Use metrics that reflect rare-event performance:
+\begin{itemize}
+  \item precision, recall, $F_1$,
+  \item AUC-PR (often more informative than AUC-ROC),
+  \item recall at fixed false-positive rate (safety constraints),
+  \item expected cost/utility under a decision policy.
+\end{itemize}
+
+\subsection{Methods for imbalance}
+Common techniques:
+\begin{itemize}
+  \item class weighting (penalize mistakes on minority class),
+  \item resampling (under-sampling majority or over-sampling minority),
+  \item synthetic sampling (e.g., SMOTE-type methods, with caution),
+  \item anomaly-detection framing when labels are extremely sparse.
+\end{itemize}
+In DSS, also consider operational constraints: if only $k$ cases can be handled, top-$k$ ranking may be a better framing than binary classification.
+
+\section{Calibration and Threshold Selection}
+
+\subsection{Calibration}
+Many classifiers output scores that are not true probabilities. Calibration methods include:
+\begin{itemize}
+  \item Platt scaling (logistic calibration),
+  \item isotonic regression (non-parametric calibration).
+\end{itemize}
+Calibration should be evaluated using reliability diagrams and calibration error measures.
+
+\subsection{Threshold selection with costs and capacity}
+Threshold $\tau$ should be selected based on:
+\begin{itemize}
+  \item a cost matrix (false positives vs.\ false negatives),
+  \item capacity constraints (how many actions are feasible per day/week),
+  \item safety requirements (minimum recall for high-risk cases),
+  \item fairness constraints (avoid harmful disparities across groups).
+\end{itemize}
+In many DSS, thresholding is part of \emph{policy}, not just model evaluation.
+
+\subsection{Decision curves and expected utility}
+Decision curve analysis and utility-based evaluation compare policies across thresholds, helping stakeholders select an operating point aligned with organizational priorities.
+
+\section{Error Analysis and Monitoring}
+
+\subsection{Error analysis}
+Beyond aggregate metrics, analyze:
+\begin{itemize}
+  \item confusion matrix slices by subgroup, region, time, or case type,
+  \item representative false positives and false negatives,
+  \item stability across time windows (does performance degrade in certain months?),
+  \item calibration by subgroup (equal reliability is important for fairness).
+\end{itemize}
+
+\subsection{Monitoring in production}
+Production monitoring should track:
+\begin{itemize}
+  \item input drift (feature distributions),
+  \item prediction drift (score distributions),
+  \item outcome drift (base rate changes),
+  \item performance metrics when labels become available,
+  \item operational metrics (latency, failure rate, manual overrides).
+\end{itemize}
+
+\subsection{Retraining and governance}
+Retraining should be controlled:
+\begin{itemize}
+  \item define triggers and review steps,
+  \item preserve rollback capability,
+  \item document changes and re-validate fairness and safety,
+  \item communicate updates to users.
+\end{itemize}
+
+\section{Summary and Concluding Remarks}
+
+This chapter covered practical training of classification models for DSS. We emphasized aligning labels and decision time, preventing leakage through careful splitting, and building reproducible pipelines with interpretable baselines. We discussed regularization and tuning, methods for imbalanced learning, and the importance of calibration and threshold selection as decision policies. Finally, we highlighted error analysis and monitoring as essential for trustworthy deployment, including subgroup evaluation, drift detection, and governed retraining.
+
+\section{Key Terms}
+\begin{description}[style=nextline]
+  \item[Label / target] The outcome variable a classifier predicts (positive/negative or multi-class).
+  \item[Decision point] The moment in the workflow when the DSS must produce a recommendation based on available information.
+  \item[Train/validation/test split] Partitioning data for training, tuning, and final evaluation.
+  \item[Cross-validation] Repeated splitting procedure used to estimate performance and tune models robustly.
+  \item[Data leakage] Using information not available at decision time, causing overly optimistic evaluation.
+  \item[Baseline model] A simple reference model used for sanity checks and interpretability.
+  \item[Regularization] Techniques that constrain model complexity to reduce overfitting (e.g., $L_1$, $L_2$).
+  \item[Hyperparameter tuning] Selecting model settings (depth, learning rate, penalty) using validation/CV.
+  \item[Imbalanced learning] Classification when the positive class is rare, requiring specialized metrics/techniques.
+  \item[Calibration] Agreement between predicted probabilities and observed frequencies.
+  \item[Threshold / operating point] The decision cutoff used to convert scores to actions.
+  \item[Drift] Changes over time in data, outcomes, or relationships that degrade model performance.
+  \item[Subgroup analysis] Evaluating performance across demographic or contextual groups to detect disparities.
+\end{description}
+
+\section{Multiple-Choice Questions (MCQs)}
+
+\subsection*{Questions}
+\addcontentsline{toc}{subsection}{Questions}
+\begin{enumerate}[label=\textbf{Q\arabic*.}]
+  \item Why are time-based splits often preferred in DSS classification problems?
+  \begin{enumerate}[label=\alph*)]
+    \item They make training faster
+    \item They better reflect deployment where the model is applied to future data
+    \item They guarantee perfect calibration
+    \item They eliminate the need for monitoring
+  \end{enumerate}
+
+  \item A common symptom of data leakage is:
+  \begin{enumerate}[label=\alph*)]
+    \item slightly worse than expected performance
+    \item extremely high performance for simple models with no clear explanation
+    \item inability to compute precision and recall
+    \item lower training accuracy than test accuracy in all cases
+  \end{enumerate}
+
+  \item For rare-event detection, which metric is typically most informative?
+  \begin{enumerate}[label=\alph*)]
+    \item Accuracy
+    \item AUC-PR (Precision--Recall AUC)
+    \item Mean squared error
+    \item $R^2$
+  \end{enumerate}
+
+  \item Calibration is most important when:
+  \begin{enumerate}[label=\alph*)]
+    \item model outputs are used only for visualization
+    \item predicted probabilities guide thresholds and resource planning
+    \item labels are never observed
+    \item the task is deterministic optimization only
+  \end{enumerate}
+
+  \item Which approach directly addresses class imbalance during training?
+  \begin{enumerate}[label=\alph*)]
+    \item Class weighting
+    \item Increasing the number of dashboard charts
+    \item Removing validation data
+    \item Encrypting the dataset
+  \end{enumerate}
+
+  \item ``Concept drift'' refers to:
+  \begin{enumerate}[label=\alph*)]
+    \item changes in feature distributions only
+    \item changes in the input--output relationship over time
+    \item changes in the user interface only
+    \item changes in the label encoding scheme only
+  \end{enumerate}
+\end{enumerate}
+
+\subsection*{Answer Key}
+\addcontentsline{toc}{subsection}{Answer Key}
+\begin{enumerate}[label=\textbf{Q\arabic*.}]
+  \item b
+  \item b
+  \item b
+  \item b
+  \item a
+  \item b
+\end{enumerate}
+
+\section{Suggested DSS Projects (Academic)}
+
+\subsection{Project 1: Imbalanced Classification DSS for Fraud/Anomaly Screening}
+\textbf{Goal.} Train a classification model for a rare-event DSS task and design an operating policy under limited investigation capacity.
+
+\textbf{Scope and components.}
+\begin{itemize}
+  \item Build baselines and at least one advanced model (e.g., gradient boosting).
+  \item Compare imbalance strategies (class weights vs.\ resampling).
+  \item Evaluate using AUC-PR and cost-sensitive metrics.
+  \item Select a top-$k$ or threshold policy and estimate workload.
+\end{itemize}
+
+\textbf{Deliverables.} Evaluation report, threshold/capacity analysis, and a short monitoring plan.
+
+\subsection{Project 2: Calibration and Decision Thresholding for Clinical Triage}
+\textbf{Goal.} Build a probabilistic classifier and calibrate it for reliable risk communication.
+
+\textbf{Scope and components.}
+\begin{itemize}
+  \item Train a classifier that outputs probabilities.
+  \item Apply calibration (Platt or isotonic) and compare reliability diagrams.
+  \item Choose thresholds under different cost assumptions and safety constraints.
+  \item Provide an explanation interface for borderline cases.
+\end{itemize}
+
+\textbf{Deliverables.} Calibration analysis, policy recommendation, and a governance note on safety and accountability.
+
+\subsection{Project 3: Subgroup Error Analysis and Fairness Audit}
+\textbf{Goal.} Evaluate a classification DSS for performance disparities and propose mitigations.
+
+\textbf{Scope and components.}
+\begin{itemize}
+  \item Slice metrics by subgroups (demographics, regions, institutions).
+  \item Identify systematic failure modes (false negatives in a subgroup).
+  \item Propose mitigations (data improvements, thresholds, reweighting, guardrails).
+  \item Define an ongoing audit schedule and alert rules.
+\end{itemize}
+
+\textbf{Deliverables.} Fairness audit report, proposed mitigations, and monitoring/audit plan.
+

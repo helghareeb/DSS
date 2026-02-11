@@ -1,0 +1,276 @@
+\chapter{Business Intelligence}
+\label{ch:business-intelligence}
+
+\section{Chapter Overview and Learning Objectives}
+
+Business Intelligence (BI) provides the data-driven foundation for many Decision Support Systems (DSS). While DSS is often associated with models and recommendations, BI is the layer that makes decision making \emph{observable}: it defines metrics, builds reliable data pipelines, and presents information through reporting and visual analytics. In practice, BI and DSS are deeply connected. A DSS that recommends actions without consistent metrics and trusted data infrastructure will struggle to achieve adoption.
+
+This chapter introduces BI concepts and connects them to DSS design. We cover data warehousing and dimensional modeling, data acquisition and integration, data mining within BI contexts, business analytics, and visualization. We emphasize governance and the practical question: ``How does this information change a decision?''
+
+\subsection*{Learning objectives}
+\addcontentsline{toc}{subsection}{Learning objectives}
+By the end of this chapter, the student should be able to:
+\begin{itemize}
+  \item Explain the relationship between BI and DSS and distinguish descriptive, diagnostic, predictive, and prescriptive analytics.
+  \item Describe key BI components: data warehouses, semantic layers, dashboards, and governance processes.
+  \item Design a basic dimensional model (facts and dimensions) to support decision-focused reporting.
+  \item Describe common data acquisition and integration patterns (ETL/ELT, CDC, streaming) and data quality controls.
+  \item Explain how data mining supports BI (segmentation, association, anomaly patterns) and how results can drive decisions.
+  \item Apply basic principles of effective visualization and avoid common pitfalls that mislead decision makers.
+\end{itemize}
+
+\section{Data Warehousing}
+
+\subsection{From operational data to analytical data}
+Operational systems (OLTP) support transactions; BI requires analytics-optimized data (OLAP). Data warehousing integrates data from multiple sources, cleans and standardizes it, and stores historical snapshots to support trend analysis and performance measurement.
+
+\subsection{Dimensional modeling: facts and dimensions}
+A common BI modeling approach is dimensional modeling:
+\begin{itemize}
+  \item \textbf{Fact tables} store measurable events (sales, claims, visits) and numeric measures.
+  \item \textbf{Dimension tables} store descriptive context (time, customer, product, location).
+\end{itemize}
+This structure supports fast aggregation and intuitive analysis (e.g., ``sales by region by month'').
+
+\subsection{Data marts and semantic layers}
+Organizations often create data marts for specific functions (finance, marketing, operations). A semantic layer defines consistent business definitions (e.g., what counts as ``active customer'') to avoid conflicting metrics across dashboards.
+
+\subsection{Data governance in warehousing}
+Warehouses must manage:
+\begin{itemize}
+  \item metadata (definitions and lineage),
+  \item access control and privacy,
+  \item data quality rules and monitoring,
+  \item change management (schema evolution).
+\end{itemize}
+
+\section{Data Acquisition}
+
+\subsection{Data sources and ingestion}
+BI draws from:
+\begin{itemize}
+  \item internal systems (ERP, CRM, HR, finance),
+  \item logs and digital traces (web/app analytics),
+  \item sensors/IoT streams,
+  \item external datasets (market, demographics, open data).
+\end{itemize}
+
+\subsection{ETL vs.\ ELT}
+In \textbf{ETL} (Extract--Transform--Load), data is transformed before loading into the warehouse. In \textbf{ELT}, data is loaded first and transformed within the warehouse/lakehouse using scalable compute. The choice depends on platform, governance, cost, and transformation complexity.
+
+\subsection{Change data capture (CDC) and streaming}
+Many BI systems require timely updates. CDC captures incremental changes from operational databases. Streaming ingestion supports near-real-time dashboards and operational intelligence.
+
+\subsection{Data quality and validation}
+Data acquisition should include automated checks:
+\begin{itemize}
+  \item schema validation,
+  \item range and consistency checks,
+  \item missingness and outlier detection,
+  \item reconciliation against source totals.
+\end{itemize}
+Without data quality, BI becomes a source of misinformation.
+
+\section{Data Mining}
+
+\subsection{Data mining within BI}
+Data mining discovers patterns that can inform decisions. Common tasks include:
+\begin{itemize}
+  \item clustering/segmentation (customer groups),
+  \item association rules (basket analysis),
+  \item anomaly detection (fraud or operational issues),
+  \item classification/regression (risk and forecasting).
+\end{itemize}
+
+\subsection{From patterns to actions}
+A key BI-to-DSS step is converting patterns into action:
+\begin{itemize}
+  \item define interventions for each segment,
+  \item translate association rules into recommendations (cross-sell, bundling),
+  \item design alert thresholds for anomalies,
+  \item integrate predictive models into workflows.
+\end{itemize}
+
+\subsection{Operational vs.\ strategic impact}
+Some mining results support operational decisions (daily triage), while others support strategy (product positioning, resource planning). BI teams should explicitly connect analyses to decision cycles and owners.
+
+\section{Business Analytics}
+
+\subsection{Analytics continuum}
+Business analytics often follows:
+\begin{itemize}
+  \item \textbf{Descriptive}: what happened?
+  \item \textbf{Diagnostic}: why did it happen?
+  \item \textbf{Predictive}: what will happen?
+  \item \textbf{Prescriptive}: what should we do?
+\end{itemize}
+BI historically focused on descriptive and diagnostic analytics; modern BI increasingly integrates predictive and prescriptive components, blurring the line with DSS.
+
+\subsection{Key performance indicators (KPIs)}
+KPIs should be:
+\begin{itemize}
+  \item aligned with organizational objectives,
+  \item defined unambiguously (semantic layer),
+  \item actionable (linked to decisions),
+  \item balanced (avoid optimizing one metric at the expense of others).
+\end{itemize}
+
+\subsection{Experimentation and causal thinking}
+Analytics should not only correlate outcomes but also support better decisions. When possible, organizations use experiments (A/B testing) and quasi-experimental designs to evaluate interventions. DSS designers should be careful not to confuse correlation with causation when recommending actions.
+
+\section{Visualization}
+
+\subsection{Visualization principles for decision making}
+Effective visualizations:
+\begin{itemize}
+  \item match the chart type to the question (comparison, trend, composition),
+  \item use appropriate scales and avoid misleading axes,
+  \item highlight uncertainty where relevant,
+  \item minimize clutter and cognitive load,
+  \item support drill-down and segmentation.
+\end{itemize}
+
+\subsection{Common pitfalls}
+Pitfalls that degrade decision quality include:
+\begin{itemize}
+  \item inconsistent definitions across dashboards,
+  \item cherry-picked time windows,
+  \item misleading color scales,
+  \item lack of context (no baselines or targets),
+  \item too many metrics without prioritization.
+\end{itemize}
+
+\subsection{From dashboards to decision support}
+Dashboards become decision support when they are embedded in workflows:
+\begin{itemize}
+  \item include alerts and recommended next actions,
+  \item connect to playbooks (what to do when KPI is abnormal),
+  \item enable scenario comparison (what-if sliders),
+  \item provide audit logs of actions taken.
+\end{itemize}
+
+\section{Summary and Concluding Remarks}
+
+This chapter presented Business Intelligence as the descriptive and diagnostic foundation of DSS. We discussed how data warehousing integrates and governs analytical data, how data acquisition pipelines ensure timeliness and quality, and how data mining extracts patterns that can be translated into actions. We then positioned BI within the analytics continuum from descriptive to prescriptive analytics, highlighting the importance of well-defined KPIs and causal thinking. Finally, we covered visualization principles and how dashboards become true decision support when they are actionable, trustworthy, and embedded in organizational workflows.
+
+\section{Key Terms}
+\begin{description}[style=nextline]
+  \item[Business Intelligence (BI)] Processes and technologies for collecting, integrating, analyzing, and visualizing data to support decisions.
+  \item[Data warehouse] Curated, integrated historical data store optimized for analytics and reporting.
+  \item[Dimensional modeling] BI modeling approach using fact and dimension tables to support intuitive aggregation.
+  \item[Fact table] Table containing measurable events and numeric measures (e.g., sales amount).
+  \item[Dimension table] Table containing descriptive context for facts (time, product, customer, location).
+  \item[Semantic layer] A standardized business definitions layer ensuring consistent KPI meanings across reports.
+  \item[ETL / ELT] Data integration patterns: transform before loading (ETL) vs.\ after loading (ELT).
+  \item[Change data capture (CDC)] Capturing incremental changes from source systems to update analytical stores.
+  \item[Data quality] Accuracy, completeness, consistency, and timeliness of data used for analytics.
+  \item[Data mining] Discovering patterns in large datasets (segmentation, association, anomalies, prediction).
+  \item[KPI] Key performance indicator: a metric aligned with objectives and decision cycles.
+  \item[Dashboard] Visual interface presenting KPIs and enabling interactive exploration.
+\end{description}
+
+\section{Multiple-Choice Questions (MCQs)}
+
+\subsection*{Questions}
+\addcontentsline{toc}{subsection}{Questions}
+\begin{enumerate}[label=\textbf{Q\arabic*.}]
+  \item A data warehouse is primarily optimized for:
+  \begin{enumerate}[label=\alph*)]
+    \item frequent transactional updates
+    \item analytics, aggregation, and historical reporting
+    \item training deep neural networks only
+    \item storing raw logs without governance
+  \end{enumerate}
+
+  \item In dimensional modeling, a fact table typically contains:
+  \begin{enumerate}[label=\alph*)]
+    \item only text descriptions
+    \item numeric measures of business events
+    \item only policy rules
+    \item only unstructured images
+  \end{enumerate}
+
+  \item A key purpose of a semantic layer is to:
+  \begin{enumerate}[label=\alph*)]
+    \item increase GPU utilization
+    \item ensure KPIs have consistent definitions across reports
+    \item remove the need for data quality checks
+    \item replace dashboards with emails
+  \end{enumerate}
+
+  \item ``ELT'' differs from ``ETL'' mainly because in ELT:
+  \begin{enumerate}[label=\alph*)]
+    \item transformation happens after loading into the target platform
+    \item transformation happens before extraction
+    \item loading never occurs
+    \item governance is impossible
+  \end{enumerate}
+
+  \item The main risk of dashboards with too many metrics is:
+  \begin{enumerate}[label=\alph*)]
+    \item increased calibration error
+    \item information overload and unclear decision focus
+    \item guaranteed bias reduction
+    \item elimination of latency issues
+  \end{enumerate}
+
+  \item BI becomes true decision support when:
+  \begin{enumerate}[label=\alph*)]
+    \item it only stores raw data
+    \item it is linked to actions, workflows, and playbooks
+    \item it avoids governance to be more flexible
+    \item it never changes KPI definitions
+  \end{enumerate}
+\end{enumerate}
+
+\subsection*{Answer Key}
+\addcontentsline{toc}{subsection}{Answer Key}
+\begin{enumerate}[label=\textbf{Q\arabic*.}]
+  \item b
+  \item b
+  \item b
+  \item a
+  \item b
+  \item b
+\end{enumerate}
+
+\section{Suggested DSS Projects (Academic)}
+
+\subsection{Project 1: Dimensional Model and KPI Dashboard for a DSS Domain}
+\textbf{Goal.} Design a warehouse schema and dashboard for a decision cycle (e.g., student retention, hospital operations, supply chain performance).
+
+\textbf{Scope and components.}
+\begin{itemize}
+  \item Define decision questions and KPIs.
+  \item Design fact and dimension tables with clear grain.
+  \item Propose data quality checks and lineage documentation.
+  \item Provide dashboard mockups with drill-down and segmentation.
+\end{itemize}
+
+\textbf{Deliverables.} Dimensional schema diagram, KPI definitions, data quality plan, and dashboard mockups.
+
+\subsection{Project 2: Data Pipeline and Quality Monitoring Prototype}
+\textbf{Goal.} Build a small ETL/ELT pipeline (can be simulated) and implement automated data quality validation.
+
+\textbf{Scope and components.}
+\begin{itemize}
+  \item Ingest data from multiple sources (CSV, API, or database export).
+  \item Apply transformations and load into an analytical table.
+  \item Implement validation checks (schema, missingness, ranges, reconciliation).
+  \item Produce a monitoring report and alert rules.
+\end{itemize}
+
+\textbf{Deliverables.} Pipeline code/notebook, validation results, and an operational monitoring plan.
+
+\subsection{Project 3: From BI to DSS: Actionable Dashboard with Playbooks}
+\textbf{Goal.} Extend a BI dashboard into a DSS by adding recommended actions and scenario analysis.
+
+\textbf{Scope and components.}
+\begin{itemize}
+  \item Select a KPI and define abnormal conditions.
+  \item Create playbooks: ``if KPI deviates, then do X''.
+  \item Add a simple forecasting or risk module to anticipate KPI changes.
+  \item Propose governance: who acts, what is logged, and how impact is measured.
+\end{itemize}
+
+\textbf{Deliverables.} Actionable dashboard design, playbooks, and an evaluation plan for decision impact.

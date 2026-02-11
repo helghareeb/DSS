@@ -1,0 +1,265 @@
+
+\chapter{Decision Making Concepts}
+\label{ch:decision-making-concepts}
+\section{Chapter Overview and Learning Objectives}
+
+Decision Support Systems (DSS) are ultimately about \emph{improving decisions}. To design, evaluate, and deploy effective DSS, it is essential to understand how decisions are made in practice: what decision makers are trying to optimize, which constraints shape their choices, and how human judgment can deviate from purely rational models.
+
+This chapter introduces foundational decision-making concepts that frequently appear in DSS projects across domains (business, healthcare, government, education, and cybersecurity). The emphasis is on concepts that translate into implementable system requirements (e.g., what information to present, which trade-offs to compute, how to incorporate risk attitudes, and how to support groups).
+
+\subsection*{Learning objectives}
+\addcontentsline{toc}{subsection}{Learning objectives}
+By the end of this chapter, the student should be able to:
+\begin{itemize}
+  \item Explain normative, descriptive, and prescriptive perspectives on decision making and why DSS design often blends them.
+  \item Distinguish rational decision models from bounded rationality, and recognize typical contexts where heuristics are used.
+  \item Describe major decision environments (certainty, risk, and uncertainty) and how they influence model choice.
+  \item Formulate basic decision problems using decision trees, expected value/expected utility, and value-of-information reasoning.
+  \item Identify common cognitive biases relevant to DSS usage and propose interface/interaction mitigations.
+  \item Explain key features of group decision making and how Group DSS (GDSS) can support collaboration and consensus.
+\end{itemize}
+
+\section{Fundamentals of Decision Making}
+
+\subsection{Rational decision making (normative view)}
+In the \textbf{normative} (or rational) view, a decision maker is assumed to:
+\begin{enumerate}[label=\arabic*.]
+  \item define objectives and constraints,
+  \item enumerate feasible alternatives,
+  \item evaluate alternatives using a criterion (e.g., expected profit, cost, utility),
+  \item select the alternative that maximizes the criterion.
+\end{enumerate}
+This view is particularly compatible with model-driven DSS, optimization, and formal multi-criteria methods. It is also useful as a \emph{reference model}: even when people deviate from rationality, a DSS may compute the rational benchmark to support reflection and learning.
+
+\subsection{Bounded rationality and satisficing}
+In realistic organizational settings, decision makers face limits in time, information, and cognitive capacity. \textbf{Bounded rationality} suggests that instead of optimizing perfectly, individuals often \textbf{satisfice}: they search for an option that is ``good enough'' relative to goals and constraints.
+
+Implications for DSS:
+\begin{itemize}
+  \item The system should reduce \emph{search costs} (quick access to relevant alternatives).
+  \item The system should reduce \emph{evaluation costs} (summaries, rankings, and scenario comparisons).
+  \item The system should support \emph{progressive disclosure} (details on demand) to avoid information overload.
+\end{itemize}
+
+\subsection{Heuristics and cognitive biases}
+Humans frequently rely on heuristics (mental shortcuts) that are efficient but can be systematically biased. In DSS contexts, important examples include:
+\begin{itemize}
+  \item \textbf{Anchoring}: early information strongly influences final judgments, even if irrelevant.
+  \item \textbf{Availability}: vivid or recent events are over-weighted relative to base rates.
+  \item \textbf{Confirmation bias}: people seek evidence that supports their initial hypothesis.
+  \item \textbf{Overconfidence}: excessive confidence in one’s judgment or model outputs.
+  \item \textbf{Automation bias}: over-reliance on system recommendations, especially under time pressure.
+\end{itemize}
+
+DSS can mitigate biases through calibrated uncertainty displays, transparency about assumptions, ``second opinion'' comparisons, and structured decision workflows (e.g., explicit checklists for high-stakes decisions).
+
+\section{Decision Environments}
+
+\subsection{Decisions under certainty}
+Under \textbf{certainty}, outcomes of actions are assumed known (or nearly known). Deterministic optimization and rule-based decision logic are often appropriate (e.g., scheduling when processing times are fixed).
+
+\subsection{Decisions under risk}
+Under \textbf{risk}, multiple outcomes are possible and probabilities can be estimated from data, models, or expert judgment. Expected value methods and probabilistic simulation are common.
+
+\subsection{Decisions under uncertainty and ambiguity}
+Under \textbf{uncertainty}, probabilities are unknown or unreliable (e.g., rare events, novel markets, disruptive technologies). Under \textbf{ambiguity}, even the set of outcomes or models may be contested.
+
+Practical DSS strategies include:
+\begin{itemize}
+  \item robust decision making (solutions that perform reasonably across scenarios),
+  \item sensitivity analysis (identify which assumptions matter most),
+  \item scenario planning (structured exploration of plausible futures),
+  \item human-in-the-loop governance (explicit review for high-impact decisions).
+\end{itemize}
+
+\subsection{Information quality}
+Decision quality depends not only on models but also on information quality (accuracy, timeliness, completeness, consistency, and relevance). A DSS should therefore expose provenance and limitations (e.g., data recency, missingness, and known bias sources) rather than presenting outputs as unquestionable truths.
+
+\section{Decision Models and Frameworks}
+
+\subsection{Normative, descriptive, and prescriptive perspectives}
+\textbf{Normative} models specify how decisions \emph{should} be made (e.g., maximize expected utility). \textbf{Descriptive} models describe how decisions \emph{are} made (including biases and organizational dynamics). \textbf{Prescriptive} approaches aim to improve decisions by combining models, data, and interventions (often the closest to DSS practice).
+
+\subsection{Decision trees}
+\textbf{Decision trees} model sequential choices under uncertainty by representing:
+\begin{itemize}
+  \item decision nodes (choices),
+  \item chance nodes (random outcomes),
+  \item payoffs (costs, benefits, or utilities).
+\end{itemize}
+Decision trees are valuable for communicating assumptions, structuring discussion, and performing ``what-if'' analysis, even when final computation is done via simulation or optimization.
+
+\subsection{Expected value and expected utility}
+For decisions under risk, a common baseline is \textbf{expected value}:
+$$
+\mathbb{E}[X] = \sum_{i=1}^{n} p_i x_i .
+$$
+However, many decisions involve risk attitudes. \textbf{Expected utility theory} replaces monetary value with a utility function $u(\cdot)$:
+$$
+\mathbb{E}[u(X)] = \sum_{i=1}^{n} p_i u(x_i) .
+$$
+In DSS, this motivates interfaces that allow decision makers to explore trade-offs (e.g., higher expected profit vs.\ lower downside risk) rather than presenting a single ``best'' option.
+
+\subsection{Value of information}
+Information has value when it changes decisions. DSS designers should consider:
+\begin{itemize}
+  \item \textbf{What information would change the decision?}
+  \item \textbf{How much would it be worth to acquire it?}
+  \item \textbf{Is the information actionable within time constraints?}
+\end{itemize}
+This perspective helps prioritize data acquisition, analytics investments, and alert design.
+
+\section{Group and Organizational Decision Making}
+
+\subsection{Why group decisions are different}
+Many organizational decisions are made by committees, cross-functional teams, or multi-stakeholder groups. Group decisions introduce:
+\begin{itemize}
+  \item differing objectives and incentives,
+  \item information asymmetry (different members hold different information),
+  \item coordination costs and delays,
+  \item political behavior and negotiation,
+  \item risks of groupthink and polarization.
+\end{itemize}
+
+\subsection{Group DSS (GDSS)}
+A \textbf{Group Decision Support System (GDSS)} supports collaboration by enabling structured communication, shared representations (dashboards, decision trees, criteria), and transparent documentation of assumptions and votes.
+
+Typical GDSS capabilities include:
+\begin{itemize}
+  \item anonymous idea generation (reduces dominance effects),
+  \item multi-criteria voting and ranking,
+  \item shared scenario exploration (sensitivity/what-if),
+  \item traceability (who proposed what, why decisions were made).
+\end{itemize}
+
+\subsection{Organizational implementation considerations}
+Even a technically strong DSS can fail if it conflicts with organizational workflows. Adoption is influenced by training, trust, accountability, and incentives. A practical design principle is to embed DSS outputs into existing decision routines (meetings, approvals, audits) rather than expecting users to adopt a separate process.
+
+\section{Summary and Concluding Remarks}
+
+This chapter introduced core decision-making concepts that underpin effective DSS design. We contrasted normative rational models with bounded rationality and highlighted how heuristics and biases affect decision behavior. We also examined decision environments (certainty, risk, uncertainty), foundational decision models (decision trees, expected value/utility, value of information), and the distinctive challenges of group and organizational decision making. These concepts translate directly into DSS requirements: what information to present, how to represent uncertainty, how to structure interaction, and how to support accountability and collaboration.
+
+\section{Key Terms}
+\begin{description}[style=nextline]
+  \item[Normative decision model] A model specifying how decisions \emph{should} be made according to a formal criterion (e.g., maximize expected utility).
+  \item[Descriptive decision model] A model describing how people \emph{actually} make decisions, including biases, heuristics, and organizational influences.
+  \item[Prescriptive analytics] Methods that recommend actions, often combining data-driven prediction with optimization, rules, and human judgment.
+  \item[Bounded rationality] The idea that decision makers are limited by information, time, and cognitive constraints, leading to satisficing rather than perfect optimization.
+  \item[Satisficing] Choosing an option that meets acceptable thresholds rather than seeking the theoretical optimum.
+  \item[Heuristic] A rule-of-thumb or mental shortcut that reduces cognitive effort but may introduce systematic errors.
+  \item[Anchoring bias] Over-reliance on an initial value or framing when making subsequent judgments.
+  \item[Availability heuristic] Judging likelihood based on how easily examples come to mind, rather than on base rates.
+  \item[Confirmation bias] The tendency to search for or interpret evidence in ways that confirm prior beliefs.
+  \item[Automation bias] Over-trust in automated recommendations, potentially ignoring contradictory evidence or context.
+  \item[Decision tree] A graphical model of sequential decisions and uncertain outcomes used for structuring and analyzing choices.
+  \item[Expected value] The probability-weighted average outcome of a random variable.
+  \item[Expected utility] The probability-weighted average of utility values, capturing risk attitudes.
+  \item[Value of information] The expected benefit of obtaining additional information before making a decision.
+  \item[Group DSS (GDSS)] A DSS designed to support decisions made by groups via structured collaboration, shared artifacts, and traceability.
+\end{description}
+
+\section{Multiple-Choice Questions (MCQs)}
+
+\subsection*{Questions}
+\addcontentsline{toc}{subsection}{Questions}
+\begin{enumerate}[label=\textbf{Q\arabic*.}]
+  \item Which statement best distinguishes \emph{normative} from \emph{descriptive} decision models?
+  \begin{enumerate}[label=\alph*)]
+    \item Normative models describe how people decide in practice; descriptive models define the optimal decision.
+    \item Normative models specify how decisions should be made; descriptive models explain how decisions are made in reality.
+    \item Normative models apply only to group decisions; descriptive models apply only to individual decisions.
+    \item Normative models require ML; descriptive models require optimization.
+  \end{enumerate}
+
+  \item Bounded rationality primarily implies that:
+  \begin{enumerate}[label=\alph*)]
+    \item People always compute exact optimal solutions.
+    \item People have unlimited information and time.
+    \item People often satisfice due to cognitive and informational constraints.
+    \item Decision making is random and cannot be supported by systems.
+  \end{enumerate}
+
+  \item A decision environment with known outcome probabilities is best described as:
+  \begin{enumerate}[label=\alph*)]
+    \item Certainty
+    \item Risk
+    \item Uncertainty
+    \item Ambiguity
+  \end{enumerate}
+
+  \item Which of the following is an example of \emph{automation bias}?
+  \begin{enumerate}[label=\alph*)]
+    \item Ignoring a DSS recommendation and relying only on intuition
+    \item Over-trusting a DSS recommendation even when domain evidence suggests it is wrong
+    \item Searching for data that contradicts the DSS output
+    \item Improving model performance by feature engineering
+  \end{enumerate}
+
+  \item The expected value of outcomes $x_1,\dots,x_n$ with probabilities $p_1,\dots,p_n$ is:
+  \begin{enumerate}[label=\alph*)]
+    \item $\sum_{i=1}^{n} x_i$
+    \item $\sum_{i=1}^{n} p_i x_i$
+    \item $\sum_{i=1}^{n} p_i / x_i$
+    \item $\max_i x_i$
+  \end{enumerate}
+
+  \item In a GDSS, anonymous idea generation is useful mainly because it can:
+  \begin{enumerate}[label=\alph*)]
+    \item eliminate the need for any data
+    \item reduce dominance effects and social pressure
+    \item guarantee consensus in all cases
+    \item replace decision accountability
+  \end{enumerate}
+\end{enumerate}
+
+\subsection*{Answer Key}
+\addcontentsline{toc}{subsection}{Answer Key}
+\begin{enumerate}[label=\textbf{Q\arabic*.}]
+  \item b
+  \item c
+  \item b
+  \item b
+  \item b
+  \item b
+\end{enumerate}
+
+\section{Suggested DSS Projects (Academic)}
+
+\subsection{Project 1: Bias-Aware Decision Dashboard for Scholarship Allocation}
+\textbf{Problem.} A university allocates a limited number of scholarships. The goal is to support fair and transparent decisions using historical applicant data and explicit criteria.
+
+\textbf{Scope and components.}
+\begin{itemize}
+  \item Build a scoring model (baseline: weighted criteria; advanced: ML classifier/regressor).
+  \item Add scenario analysis to explore trade-offs (merit vs.\ need, constraints on budget, minimum representation constraints).
+  \item Provide an audit view: subgroup performance, fairness metrics, and explanation of individual recommendations.
+  \item Document a human-in-the-loop process: approvals, overrides, and justifications.
+\end{itemize}
+
+\textbf{Deliverables.} Decision policy definition, dashboard mockup, evaluation and fairness audit, and a short governance memo.
+
+\subsection{Project 2: Decision Tree and Value-of-Information Study for Cybersecurity Response}
+\textbf{Problem.} A security operations team must decide whether to isolate a machine after an alert. Isolation reduces risk but disrupts operations.
+
+\textbf{Scope and components.}
+\begin{itemize}
+  \item Build a decision tree including false-positive/false-negative outcomes and associated costs.
+  \item Estimate probabilities from a small dataset or expert assumptions.
+  \item Compute expected value under different thresholds and show sensitivity to costs.
+  \item Evaluate the value of additional information (e.g., running an extra scan) before action.
+\end{itemize}
+
+\textbf{Deliverables.} Decision tree model, cost assumptions, sensitivity analysis, and policy recommendations.
+
+\subsection{Project 3: GDSS Prototype for Multi-Criteria Campus Facility Planning}
+\textbf{Problem.} A committee selects one of several facility upgrade options subject to budget constraints and multiple criteria (cost, capacity, accessibility, sustainability).
+
+\textbf{Scope and components.}
+\begin{itemize}
+  \item Implement a GDSS-style workflow: criteria definition, weighting, anonymous idea generation, and voting.
+  \item Provide interactive sensitivity analysis for criteria weights.
+  \item Add traceability: record assumptions, votes, and decision rationale.
+\end{itemize}
+
+\textbf{Deliverables.} Prototype interface (can be minimal), a sample dataset of alternatives and criteria, and a short report on group decision challenges and mitigations.
+

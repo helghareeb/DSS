@@ -1,0 +1,322 @@
+
+\chapter{Model Management}
+\label{ch:model-management}
+\section{Chapter Overview and Learning Objectives}
+
+Model management is the ``engine room'' of many Decision Support Systems (DSS). It concerns how models are selected, built, stored, validated, deployed, monitored, and improved over time. Historically, DSS model bases emphasized operations research (OR), statistics, forecasting, and simulation. Modern AI-enabled DSS expand this model base to include machine learning and deep learning models served through APIs and governed through MLOps practices.
+
+This chapter provides a structured view of model management in DSS. We focus on the model lifecycle, model governance, and the integration of optimization/simulation with data-driven models. The goal is to equip students with a framework for building DSS that remain correct, robust, auditable, and maintainable---not only accurate in a lab setting.
+
+\subsection*{Learning objectives}
+\addcontentsline{toc}{subsection}{Learning objectives}
+By the end of this chapter, the student should be able to:
+\begin{itemize}
+  \item Explain the role of the model base in classical DSS and how it evolves in AI-enabled DSS.
+  \item Distinguish optimization, simulation, forecasting/statistical models, and ML/DL models in terms of objectives, assumptions, and outputs.
+  \item Describe a practical model lifecycle: problem formulation, development, validation, deployment, monitoring, and retirement.
+  \item Formulate basic optimization models (objective, decision variables, constraints) and interpret sensitivity analysis.
+  \item Explain the purpose of scenario analysis and simulation in decision support and how to interpret results.
+  \item Describe model governance artifacts (documentation, versioning, approvals, audit trails) and why they matter for high-stakes DSS.
+  \item Outline how ML models can be integrated into the DSS model base, including registries, APIs, drift monitoring, and retraining triggers.
+\end{itemize}
+
+\section{Model Types in DSS}
+
+\subsection{Optimization models (prescriptive)}
+Optimization models recommend actions by selecting decision variables that maximize or minimize an objective while satisfying constraints. Typical outputs include:
+\begin{itemize}
+  \item optimal or near-optimal decision variable values,
+  \item objective value (e.g., minimum cost),
+  \item sensitivity and shadow prices (in linear models),
+  \item feasibility and constraint tightness.
+\end{itemize}
+
+\subsection{Simulation models (what-if and risk analysis)}
+Simulation models explore system behavior under uncertainty or complex dynamics. They are commonly used when:
+\begin{itemize}
+  \item analytic solutions are difficult,
+  \item system dynamics are nonlinear or stochastic,
+  \item queues, delays, or interactions matter (e.g., hospitals, supply chains).
+\end{itemize}
+Outputs often include distributions of outcomes, confidence intervals, and risk measures.
+
+\subsection{Forecasting and statistical models}
+Forecasting models predict future quantities (demand, arrivals, prices, workloads). Statistical models may also estimate relationships and uncertainty (regression, time-series, Bayesian models). These models frequently feed optimization and simulation.
+
+\subsection{Machine learning and deep learning models}
+ML/DL models are typically used for:
+\begin{itemize}
+  \item classification (risk categories, approval decisions),
+  \item regression (continuous predictions),
+  \item ranking/recommendation (prioritization),
+  \item anomaly detection (fraud, faults),
+  \item representation learning for unstructured data (text, images).
+\end{itemize}
+In DSS, the model output is rarely the final answer; it becomes an input to decision rules, constraints, and human judgment.
+
+\subsection{Hybrid model portfolios}
+Many real systems are \emph{hybrid}: forecasting + optimization (prescriptive), ML + rules (guardrails), or simulation for stress testing ML-driven policies. Model management must therefore support multiple model types and their dependencies.
+
+\section{Model Lifecycle and Governance}
+
+\subsection{Model lifecycle in DSS}
+A practical lifecycle includes:
+\begin{enumerate}[label=\arabic*.]
+  \item \textbf{Problem definition}: define the decision, objective, constraints, and stakeholders.
+  \item \textbf{Data and assumptions}: identify required data, assumptions, and data quality risks.
+  \item \textbf{Model development}: build a baseline model, then iterate to improve performance and usability.
+  \item \textbf{Validation}: verify correctness (does the model implement what we intend?) and validate performance (does it work in realistic conditions?).
+  \item \textbf{Deployment}: integrate into workflows via dashboards, reports, APIs, or batch jobs.
+  \item \textbf{Monitoring}: track model health, drift, stability, fairness, and operational metrics (latency, failures).
+  \item \textbf{Maintenance}: retrain or recalibrate as needed; update assumptions and constraints.
+  \item \textbf{Retirement}: deprecate models that are obsolete or unsafe.
+\end{enumerate}
+
+\subsection{Verification vs.\ validation}
+In DSS, model risk often comes from confusing:
+\begin{itemize}
+  \item \textbf{Verification}: ``Did we build the model right?'' (correct implementation).
+  \item \textbf{Validation}: ``Did we build the right model?'' (fitness for purpose).
+\end{itemize}
+Both are essential. For example, a perfectly coded optimization model can still be invalid if constraints omit critical real-world limitations.
+
+\subsection{Governance artifacts}
+Model governance supports accountability and reproducibility. Typical artifacts include:
+\begin{itemize}
+  \item model documentation (assumptions, intended use, limitations),
+  \item versioning (code, parameters, training data snapshot),
+  \item approval workflows (who signs off and under what criteria),
+  \item audit trails (who ran the model, when, and what action was taken),
+  \item incident response (what happens if harm occurs or performance degrades).
+\end{itemize}
+
+\subsection{Model risk management}
+In high-impact DSS, model risk management requires structured stress testing:
+\begin{itemize}
+  \item scenario tests under rare but plausible conditions,
+  \item sensitivity to data shifts and missingness,
+  \item robustness to adversarial or corrupted inputs (for ML),
+  \item fairness and subgroup performance checks.
+\end{itemize}
+
+\section{Optimization Models for Decision Support}
+
+\subsection{Basic structure}
+An optimization model typically has:
+\begin{itemize}
+  \item decision variables $\mathbf{x}$,
+  \item objective function $f(\mathbf{x})$ to minimize/maximize,
+  \item constraints $g_i(\mathbf{x}) \le 0$ and $h_j(\mathbf{x}) = 0$.
+\end{itemize}
+
+For example, a linear programming (LP) formulation is:
+$$
+\min_{\mathbf{x}} \; \mathbf{c}^\top \mathbf{x} \quad
+\text{s.t. } A\mathbf{x} \le \mathbf{b}, \; \mathbf{x} \ge 0.
+$$
+Many DSS tasks map naturally to LP, integer programming (IP), or mixed-integer programming (MIP): scheduling, routing, allocation, and capacity planning.
+
+\subsection{Interpreting solutions and sensitivity}
+Beyond producing an optimal solution, DSS must help users interpret:
+\begin{itemize}
+  \item which constraints are binding (tight),
+  \item how much improvement is possible if a constraint is relaxed,
+  \item which parameters (costs, demands, capacities) drive the result.
+\end{itemize}
+Sensitivity analysis supports ``what-if'' reasoning and improves user trust.
+
+\subsection{Optimization under uncertainty}
+Classical LP assumes certainty in parameters. Under uncertainty, common approaches include:
+\begin{itemize}
+  \item stochastic optimization (explicit probabilities),
+  \item robust optimization (worst-case or bounded uncertainty),
+  \item chance constraints (probabilistic feasibility),
+  \item simulation-optimization (evaluate candidate policies via simulation).
+\end{itemize}
+
+\section{Simulation and Scenario Analysis}
+
+\subsection{Monte Carlo simulation}
+Monte Carlo simulation propagates uncertainty by repeatedly sampling uncertain inputs and computing outcomes. Outputs include distributions (not just averages), enabling risk-aware decisions.
+
+In DSS, Monte Carlo simulation is often used for:
+\begin{itemize}
+  \item financial risk and portfolio stress testing,
+  \item demand uncertainty in inventory planning,
+  \item project scheduling risk (PERT-like uncertainty),
+  \item uncertainty in ML model outputs (when calibrated probabilities are available).
+\end{itemize}
+
+\subsection{Discrete-event simulation}
+Discrete-event simulation (DES) models systems where state changes at discrete events (arrivals, service completions). Common DSS applications include hospitals (patient flow), call centers, manufacturing lines, and logistics.
+
+\subsection{Scenario planning and what-if analysis}
+Scenario planning structures plausible futures and examines decisions across them. Good DSS practice is to maintain a scenario library with documented assumptions so that scenario comparisons remain transparent and repeatable.
+
+\section{Integrating ML Models into the Model Base}
+
+\subsection{From notebooks to production services}
+An ML model becomes a DSS component only when it can be reliably used in decision workflows. Typical steps include:
+\begin{itemize}
+  \item packaging the model with preprocessing (pipelines),
+  \item exposing inference via batch jobs or real-time APIs,
+  \item connecting predictions to decision policies (thresholds, constraints, human review),
+  \item logging inputs/outputs for audit and debugging.
+\end{itemize}
+
+\subsection{Model registries and versioning}
+A \textbf{model registry} stores model versions, metadata, and deployment status (e.g., staging vs.\ production). Versioning should cover:
+\begin{itemize}
+  \item code and parameters,
+  \item training data snapshot or reference,
+  \item evaluation metrics and subgroup performance,
+  \item intended use and limitations.
+\end{itemize}
+
+\subsection{Monitoring, drift, and retraining}
+Operational monitoring typically includes:
+\begin{itemize}
+  \item \textbf{data drift}: input distributions change,
+  \item \textbf{concept drift}: relationship between inputs and outcomes changes,
+  \item \textbf{performance drift}: accuracy/calibration degrades,
+  \item \textbf{fairness drift}: subgroup errors shift over time.
+\end{itemize}
+Retraining triggers can be time-based (e.g., monthly) or event-based (when drift exceeds a threshold). In high-stakes DSS, retraining should be governed by approval workflows and documented tests, not performed silently.
+
+\subsection{Combining ML with optimization and rules}
+Common integrations include:
+\begin{itemize}
+  \item ML forecasts feeding optimization decisions,
+  \item ML risk scores enabling triage and prioritization,
+  \item rules acting as guardrails (hard constraints) around ML outputs.
+\end{itemize}
+This hybrid design often improves safety and interpretability.
+
+\section{Summary and Concluding Remarks}
+
+This chapter examined model management as a central capability of DSS. We surveyed model types (optimization, simulation, forecasting/statistics, and ML/DL), introduced a practical model lifecycle, and emphasized governance artifacts that support accountability and reproducibility. We discussed the structure of optimization models and the interpretation of results through sensitivity analysis, then explored simulation and scenario analysis for uncertainty. Finally, we described how ML models are integrated into DSS through registries, APIs, monitoring, and controlled retraining, often in hybrid combinations with optimization and rule-based guardrails.
+
+\section{Key Terms}
+\begin{description}[style=nextline]
+  \item[Model base] The collection of models, solvers, and decision logic available to a DSS for analysis and recommendation.
+  \item[Optimization] Selecting decision variables to maximize/minimize an objective subject to constraints.
+  \item[Constraint] A condition that restricts feasible solutions (e.g., budget, capacity, policy rules).
+  \item[Linear programming (LP)] Optimization with linear objective and linear constraints, typically with continuous variables.
+  \item[Integer / mixed-integer programming (IP/MIP)] Optimization where some or all decision variables are integers; used for scheduling, assignment, and routing.
+  \item[Sensitivity analysis] Studying how changes in parameters affect the optimal solution and objective value.
+  \item[Scenario analysis] Comparing outcomes under different sets of assumptions about uncertain factors.
+  \item[Monte Carlo simulation] Repeated random sampling of uncertain inputs to estimate an outcome distribution.
+  \item[Discrete-event simulation (DES)] Simulation of systems whose state changes at discrete events.
+  \item[Verification vs.\ validation] Verification checks correct implementation; validation checks fitness for purpose in real conditions.
+  \item[Model governance] Policies and processes for documentation, approval, versioning, monitoring, and auditability of models in production.
+  \item[Model registry] A system to store and manage model versions and metadata across development and deployment stages.
+  \item[Data drift / concept drift] Changes in input distributions (data drift) or in the input--output relationship (concept drift) that can degrade performance.
+  \item[Guardrails] Rules/constraints that constrain or override model outputs to improve safety, legality, or policy compliance.
+\end{description}
+
+\section{Multiple-Choice Questions (MCQs)}
+
+\subsection*{Questions}
+\addcontentsline{toc}{subsection}{Questions}
+\begin{enumerate}[label=\textbf{Q\arabic*.}]
+  \item Which statement best describes the purpose of model management in DSS?
+  \begin{enumerate}[label=\alph*)]
+    \item To store only raw data and ignore analytical models
+    \item To build models once and never update them
+    \item To manage model selection, lifecycle, governance, and operational use within decision workflows
+    \item To replace decision makers entirely with automated outputs
+  \end{enumerate}
+
+  \item In an optimization model, constraints primarily:
+  \begin{enumerate}[label=\alph*)]
+    \item visualize KPI trends
+    \item define feasibility limits such as budgets or capacities
+    \item guarantee that all models are unbiased
+    \item prevent the need for scenario analysis
+  \end{enumerate}
+
+  \item Which technique is most directly aimed at understanding how parameter changes affect an optimal solution?
+  \begin{enumerate}[label=\alph*)]
+    \item Sensitivity analysis
+    \item Data normalization
+    \item Web scraping
+    \item Principal component analysis
+  \end{enumerate}
+
+  \item Monte Carlo simulation is most appropriate when:
+  \begin{enumerate}[label=\alph*)]
+    \item all inputs are deterministic and known
+    \item uncertainty must be propagated to estimate an outcome distribution
+    \item the system has no random components
+    \item only integer decision variables exist
+  \end{enumerate}
+
+  \item A model registry is primarily used to:
+  \begin{enumerate}[label=\alph*)]
+    \item store model versions, metadata, and deployment status
+    \item store only database tables
+    \item tune hyperparameters without evaluation
+    \item remove the need for monitoring
+  \end{enumerate}
+
+  \item Concept drift refers to:
+  \begin{enumerate}[label=\alph*)]
+    \item changes in the meaning of labels or the input--output relationship over time
+    \item changes in the color scheme of a dashboard
+    \item the use of linear constraints in LP
+    \item encryption of training data
+  \end{enumerate}
+\end{enumerate}
+
+\subsection*{Answer Key}
+\addcontentsline{toc}{subsection}{Answer Key}
+\begin{enumerate}[label=\textbf{Q\arabic*.}]
+  \item c
+  \item b
+  \item a
+  \item b
+  \item a
+  \item a
+\end{enumerate}
+
+\section{Suggested DSS Projects (Academic)}
+
+\subsection{Project 1: Forecast-to-Optimize DSS for Resource Allocation}
+\textbf{Problem.} An organization must allocate limited resources (staff, vehicles, beds, budget) based on uncertain demand.
+
+\textbf{Scope and components.}
+\begin{itemize}
+  \item Build a forecasting model (statistical or ML) for demand.
+  \item Formulate an optimization model that allocates resources under constraints.
+  \item Run scenario analysis under demand uncertainty (e.g., low/medium/high demand).
+  \item Propose governance: assumptions, approvals, and audit logs.
+\end{itemize}
+
+\textbf{Deliverables.} Optimization formulation, forecasting evaluation, scenario results, and a short design report on decision impacts.
+
+\subsection{Project 2: Model Governance Portfolio for an ML Risk Scoring DSS}
+\textbf{Problem.} A risk scoring model (e.g., credit, admissions, triage) is deployed in a DSS and must be governed responsibly.
+
+\textbf{Scope and components.}
+\begin{itemize}
+  \item Define intended use, decision policy, and human-in-the-loop steps.
+  \item Create a model card: training data summary, metrics, limitations, subgroup analysis.
+  \item Define monitoring: drift signals, performance metrics, alert thresholds.
+  \item Define retraining procedure with approvals and rollback.
+\end{itemize}
+
+\textbf{Deliverables.} Model card, monitoring plan, retraining checklist, and audit trail schema.
+
+\subsection{Project 3: Simulation-Based Stress Testing of a DSS Policy}
+\textbf{Problem.} A DSS uses a policy (thresholds, rules, or optimization outputs) that may fail under rare conditions.
+
+\textbf{Scope and components.}
+\begin{itemize}
+  \item Build a Monte Carlo or discrete-event simulation of the environment.
+  \item Evaluate the DSS policy under many stochastic scenarios.
+  \item Identify failure modes (capacity overload, unfair outcomes, instability).
+  \item Propose policy improvements or guardrails.
+\end{itemize}
+
+\textbf{Deliverables.} Simulation model description, stress test results, and recommended policy modifications with justification.
+
