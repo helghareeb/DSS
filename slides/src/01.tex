@@ -1,0 +1,454 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+
+% --- Style (academic, clean) ---
+\usetheme{Madrid}
+\usecolortheme{default}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{caption}[numbered]
+
+% --- Packages ---
+\usepackage{amsmath, amsfonts, amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{tikz-cd}
+\usepackage{multicol}
+\usepackage{hyperref}
+
+% --- Metadata ---
+\title[DSS in the Era of AI]{Introduction to Decision Support Systems in the Era of AI, Machine Learning, and Deep Learning}
+\subtitle{Master's lecture (90 minutes)}
+\author{Dr.\ Haitham El-Ghareeb}
+\institute{Faculty of Computers and Information Sciences}
+\date{\today}
+
+% Full/complete date format (e.g., February 11, 2026)
+\usepackage[en-US]{datetime2}
+\DTMlangsetup[en-US]{showdayofmonth=false}
+\renewcommand{\today}{\DTMnow}
+
+% --- Small helpers ---
+\newcommand{\keyterm}[1]{\textbf{#1}}
+\newcommand{\discussionprompt}[1]{%
+  \begin{frame}{Quick discussion (2--3 minutes)}
+    \begin{block}{Prompt}
+      #1
+    \end{block}
+  \end{frame}
+}
+\newcommand{\discussionprompt}[1]{%
+  \begin{frame}{Quick discussion (2--3 minutes)}
+    \begin{block}{Prompt}
+      #1
+    \end{block}
+  \end{frame}
+}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Agenda}
+  \begin{enumerate}
+    \item Overview \& learning objectives
+    \item Fundamentals of decisions \& decision support
+    \item Classical DSS: components \& types
+    \item AI, ML, and DL for decision support
+    \item Architectures of AI-enabled DSS
+    \item Human--AI collaboration, explainability, ethics
+    \item Emerging trends \& wrap-up
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Lecture plan (90 minutes)}
+  \begin{itemize}
+    \item \keyterm{Part 1 (30 min):} DSS fundamentals + classical architectures
+    \item \keyterm{Part 2 (35 min):} AI/ML/DL in DSS + application examples
+    \item \keyterm{Part 3 (20 min):} Explainability, bias/ethics, human-in-the-loop
+    \item \keyterm{Wrap-up (5 min):} key terms + suggested readings
+  \end{itemize}
+\end{frame}
+
+\section{Overview \& objectives}
+
+\begin{frame}{Chapter overview}
+  \begin{itemize}
+    \item We introduce \keyterm{Decision Support Systems (DSS)} and how \keyterm{AI/ML/DL} are reshaping them.
+    \item Focus: how DSS differ from traditional information systems, and what changes when models become learning-based.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Learning objectives}
+  By the end of this lecture, you should be able to:
+  \begin{itemize}
+    \item Define DSS and distinguish them from traditional information systems.
+    \item Classify decisions: structured, semi-structured, unstructured; relate to DSS types.
+    \item Explain core concepts of AI, ML, and DL and how they relate.
+    \item Describe typical AI-enabled DSS architectures (data, model, UI/explanation layers).
+    \item Analyze ML/DL decision support examples (healthcare, education, security).
+    \item Discuss interpretability, bias, ethics, and human--AI collaboration.
+    \item Identify trends: AutoML for decision support; deep learning for human decision support.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Warm-up (2 minutes)}
+  \begin{block}{Question}
+    Think of a high-stakes decision in your domain. What information, models, and constraints would you want a DSS to incorporate?
+  \end{block}
+  \vspace{0.5em}
+  \begin{itemize}
+    \item Example domains: medical triage, loan approval, admissions, intrusion detection.
+  \end{itemize}
+\end{frame}
+
+\section{Fundamentals of decisions \& DSS}
+
+\begin{frame}{Nature of managerial decisions}
+  Organizational decisions vary by structure:
+  \begin{itemize}
+    \item \keyterm{Structured:} routine, well-defined procedures (e.g., reorder stock at threshold).
+    \item \keyterm{Semi-structured:} partly defined, partly judgment-based (e.g., loan evaluation).
+    \item \keyterm{Unstructured:} novel/complex (e.g., entering a new market).
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{MIS vs. DSS (scope)}
+  \begin{itemize}
+    \item Traditional \keyterm{MIS} mainly support structured decisions via standardized reporting.
+    \item \keyterm{DSS} target semi-structured and unstructured problems where human judgment is central.
+    \item Key idea: DSS \keyterm{support} (do not necessarily replace) human decision makers.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Definition of a DSS}
+  \begin{block}{Definition (paraphrased)}
+    A DSS is a computer-based information system that supports organizational decision-making, typically for semi-structured and unstructured problems.
+  \end{block}
+  \begin{itemize}
+    \item \keyterm{Computer-based:} data + models + interfaces.
+    \item \keyterm{Support:} advisory, interactive, augmenting human judgment.
+    \item Can be individual, group-based (Group DSS), or hybrid human--computer systems.
+  \end{itemize}
+\end{frame}
+
+\discussionprompt{Pick one semi-structured decision in a real organization. What data is available, what judgment is required, and what would a DSS \emph{not} be able to decide automatically?}
+
+\discussionprompt{Pick one semi-structured decision in a real organization. What data is available, what judgment is required, and what would a DSS \emph{not} be able to decide automatically?}
+
+\section{Classical DSS: components \& types}
+
+\begin{frame}{Core components of a classical DSS}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.52\textwidth}
+      \begin{itemize}
+        \item \keyterm{Data management}
+        \begin{itemize}
+          \item Databases, warehouses, external sources
+          \item ETL, data marts
+        \end{itemize}
+        \item \keyterm{Model management}
+        \begin{itemize}
+          \item Optimization, simulation, forecasting, statistics
+          \item What-if / scenario analysis
+        \end{itemize}
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{itemize}
+        \item \keyterm{Knowledge management} (optional)
+        \begin{itemize}
+          \item Rules, heuristics, expert knowledge
+        \end{itemize}
+        \item \keyterm{UI / dialog subsystem}
+        \begin{itemize}
+          \item Dashboards, visualization, interactive queries
+        \end{itemize}
+        \item \keyterm{Users}
+        \begin{itemize}
+          \item Individual or group decision makers
+        \end{itemize}
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Typology of DSS (common categories)}
+  \begin{itemize}
+    \item \keyterm{Data-driven DSS:} emphasize data access/manipulation (OLAP, BI dashboards).
+    \item \keyterm{Model-driven DSS:} emphasize analytic models (LP, simulation, forecasting).
+    \item \keyterm{Knowledge-driven DSS:} expert systems / rule-based recommendations.
+    \item \keyterm{Communication-/group-driven DSS:} support collaboration and group decision making.
+  \end{itemize}
+\end{frame}
+
+\discussionprompt{Which DSS type (data-, model-, knowledge-, or group-driven) best matches a system you have used (or could build)? What is missing from it to handle unstructured decisions?}
+
+\discussionprompt{Which DSS type (data-, model-, knowledge-, or group-driven) best matches a system you have used (or could build)? What is missing from it to handle unstructured decisions?}
+
+\section{AI in decision support}
+
+\begin{frame}{What is AI (in this context)?}
+  \begin{itemize}
+    \item AI aims to build systems that perform tasks associated with human intelligence:
+    reasoning, learning, perception, language understanding.
+    \item Relevant subfields for DSS:
+    \begin{itemize}
+      \item knowledge-based systems / expert systems
+      \item machine learning (ML) and deep learning (DL)
+      \item NLP and computer vision
+      \item planning and reasoning
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Why integrate AI into DSS?}
+  \begin{itemize}
+    \item \keyterm{Big data \& complexity:} heterogeneous, high-volume data (logs, sensors, text).
+    \item \keyterm{Personalization:} recommendations tailored to user/context.
+    \item \keyterm{Dynamics:} adapt to non-stationary environments (concept drift).
+    \item \keyterm{Efficiency:} automate routine analytics; free experts for judgment.
+  \end{itemize}
+\end{frame}
+
+\discussionprompt{In your domain, what is the strongest reason to add AI to a DSS: scale (big data), personalization, dynamics, or automation? Justify with one concrete example.}
+
+\discussionprompt{In your domain, what is the strongest reason to add AI to a DSS: scale (big data), personalization, dynamics, or automation? Justify with one concrete example.}
+
+\section{Machine learning for decision support}
+
+\begin{frame}{ML fundamentals (quick map)}
+  \begin{itemize}
+    \item \keyterm{Supervised:} labeled data $\to$ classification/regression.
+    \item \keyterm{Unsupervised:} structure discovery (clustering, dimensionality reduction).
+    \item \keyterm{Semi-/self-supervised:} learn from limited labels + abundant unlabeled data.
+    \item \keyterm{Reinforcement learning:} sequential decisions via reward optimization.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{ML-based DSS: conceptual pipeline}
+  \begin{enumerate}
+    \item Problem formulation (objectives, constraints, decision variables)
+    \item Data acquisition \& preprocessing
+    \item Feature engineering (or representation learning)
+    \item Model selection, training, validation (metrics aligned to decision cost)
+    \item Deployment into the DSS model layer (batch/real-time inference)
+    \item Human interaction \& explanation (dashboards, alerts, counterfactuals)
+    \item Monitoring (drift) and continuous learning / retraining
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Application example: clinical decision support}
+  \begin{itemize}
+    \item Inputs: patient records, labs, imaging, history.
+    \item Outputs: risk prediction (readmission/mortality) and ranked treatment options.
+    \item Interface: confidence + justification; clinician retains final responsibility.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{ML as a ``Meta-DSS'' (method selection)}
+  \begin{itemize}
+    \item Decision problem: \keyterm{which ML model} should I use for a new dataset?
+    \item Input: dataset metadata (size, sparsity, dimensionality, etc.).
+    \item Output: ranked candidate algorithms (e.g., RF, SVM, XGBoost, NN).
+    \item Bridge to trend: \keyterm{AutoML} for decision support.
+  \end{itemize}
+\end{frame}
+
+\discussionprompt{Where can an ML-based DSS fail silently: data issues, metric mismatch, deployment drift, or user misuse? Give an example and a mitigation.}
+
+\discussionprompt{Where can an ML-based DSS fail silently: data issues, metric mismatch, deployment drift, or user misuse? Give an example and a mitigation.}
+
+\section{Deep learning and advanced DSS}
+
+\begin{frame}{Deep learning basics}
+  \begin{itemize}
+    \item DL = ML with multi-layer neural networks learning hierarchical representations.
+    \item Common architectures:
+    \begin{itemize}
+      \item DNNs (general-purpose)
+      \item CNNs (images/spatial data)
+      \item RNN/LSTM/GRU (sequences/time series)
+      \item Transformers (NLP + sequence modeling)
+    \end{itemize}
+    \item Particularly useful for high-dimensional, unstructured data (text, images, audio).
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{DL for human decision support}
+  DL contributes by:
+  \begin{itemize}
+    \item handling complex input modalities (e.g., radiology images, video)
+    \item learning features from raw data (less manual feature engineering)
+    \item improving predictive accuracy that supports or partially automates decisions
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Domain examples (where DL-based DSS appear)}
+  \begin{itemize}
+    \item Healthcare: imaging-based diagnosis support; treatment prioritization.
+    \item Security: anomaly detection, surveillance triage, situational awareness.
+    \item Education: early warning systems; personalized learning recommendations.
+    \item Environment/business: event detection; recommendation systems.
+  \end{itemize}
+\end{frame}
+
+\discussionprompt{Name one decision-support problem where deep learning is appropriate, and one where it is \emph{not} worth the complexity. Explain why.}
+
+\discussionprompt{Name one decision-support problem where deep learning is appropriate, and one where it is \emph{not} worth the complexity. Explain why.}
+
+\section{Architectures of AI-enabled DSS}
+
+\begin{frame}{AI-enabled DSS architecture (layer view)}
+  \begin{enumerate}
+    \item \keyterm{Data layer:} DB/warehouse/lake + streams + unstructured stores
+    \item \keyterm{Model layer:} training pipelines, model registry, inference services (APIs)
+    \item \keyterm{Knowledge/rules:} guidelines, constraints, ontologies; hybrid neuro-symbolic
+    \item \keyterm{UI + explanations:} dashboards, alerts, visual analytics, XAI
+    \item \keyterm{Decision/action:} workflow integration + human approval/override + feedback
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Example: AI-based DSS in higher education}
+  \begin{itemize}
+    \item Goal: support academic governance (scientific output, trends, resource allocation).
+    \item Data: publications, projects, activities.
+    \item AI: trend detection, forecasting, recommendations (e.g., collaboration).
+  \end{itemize}
+\end{frame}
+
+\discussionprompt{Design a high-level architecture for an AI-enabled DSS in higher education. What are the data sources, the model(s), and how will explanations be shown to users?}
+
+\discussionprompt{Design a high-level architecture for an AI-enabled DSS in higher education. What are the data sources, the model(s), and how will explanations be shown to users?}
+
+\section{Human--AI collaboration and explainability}
+
+\begin{frame}{Human-in-the-loop design principles}
+  \begin{itemize}
+    \item \keyterm{Transparency:} conceptual understanding of what the system does.
+    \item \keyterm{Controllability:} accept/reject/override recommendations.
+    \item \keyterm{Feedback loops:} capture corrections to improve future performance.
+    \item \keyterm{Role clarity:} who decides? who is accountable?
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Explainable AI (XAI) in DSS}
+  Why XAI matters: black-box models in high-stakes settings.
+  \vspace{0.5em}
+  \begin{itemize}
+    \item \keyterm{Global:} feature importance; surrogate interpretable models.
+    \item \keyterm{Local:} LIME/SHAP; counterfactual explanations.
+    \item \keyterm{Interpretable-by-design:} rules, GAMs, constrained models, etc.
+  \end{itemize}
+\end{frame}
+
+\discussionprompt{What explanation would you personally require before acting on a model recommendation in a high-stakes setting? (global rules, local SHAP, counterfactuals, uncertainty, etc.)}
+
+\discussionprompt{What explanation would you personally require before acting on a model recommendation in a high-stakes setting? (global rules, local SHAP, counterfactuals, uncertainty, etc.)}
+
+\section{Ethical, legal, and societal issues}
+
+\begin{frame}{Privacy and security}
+  \begin{itemize}
+    \item DSS often use sensitive personal/organizational data.
+    \item Concerns: privacy compliance, access control, model/data tampering, adversarial attacks.
+    \item Need: strong data governance and auditability.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Fairness and bias}
+  \begin{itemize}
+    \item Models can learn/amplify biases present in data and historical decisions.
+    \item Risks: disparate impact across demographic groups.
+    \item Mitigation: dataset curation, fairness-aware learning, ongoing audits/monitoring.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Accountability and automation bias}
+  \begin{itemize}
+    \item Who is responsible when a DSS-influenced decision causes harm?
+    \item How do we document the decision chain (data, model version, rationale)?
+    \item Beware \keyterm{automation bias:} over-trusting recommendations.
+  \end{itemize}
+\end{frame}
+
+\discussionprompt{Discuss one realistic bias risk in a DSS (e.g., admissions, credit, policing) and propose one practical auditing or mitigation step.}
+
+\discussionprompt{Discuss one realistic bias risk in a DSS (e.g., admissions, credit, policing) and propose one practical auditing or mitigation step.}
+
+\section{Emerging trends}
+
+\begin{frame}{Trend 1: AutoML for decision support}
+  \begin{itemize}
+    \item Automated model selection + hyperparameter tuning.
+    \item Continuous adaptation to streaming data; self-diagnosis of drift.
+    \item Goal: scale ML-based DSS with fewer specialized ML experts.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Trend 2: self-supervised and lifelong learning}
+  \begin{itemize}
+    \item Self-supervised representation learning leverages large unlabeled datasets.
+    \item Continual/lifelong learning: learn over time without catastrophic forgetting.
+    \item Implication: DSS that improve with accumulated experience and transfer across tasks.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Trend 3: human-centric AI interfaces}
+  \begin{itemize}
+    \item Conversational and multimodal interfaces for decision support.
+    \item Mixed-initiative systems: human and AI collaborate in real time.
+    \item Research blend: ML/DL + HCI + cognitive science + ethics.
+  \end{itemize}
+\end{frame}
+\end{frame}
+
+\discussionprompt{AutoML can speed up deployment, but what new risks does it introduce (e.g., overfitting, hidden leakage, lack of documentation)? How would you govern it?}
+
+\discussionprompt{AutoML can speed up deployment, but what new risks does it introduce (e.g., overfitting, hidden leakage, lack of documentation)? How would you govern it?}
+
+\section{Recap \& next steps}
+
+\begin{frame}{Summary (key takeaways)}
+  \begin{itemize}
+    \item DSS support semi-structured and unstructured decisions via data + models + UI.
+    \item AI/ML/DL expand DSS capabilities: prediction, recommendations, unstructured data.
+    \item Modern DSS require explainability, monitoring, and human-in-the-loop workflows.
+    \item Responsible deployment requires attention to privacy, fairness, and accountability.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Key terms}
+  \begin{multicols}{2}
+    \begin{itemize}
+      \item Decision Support System (DSS)
+      \item Structured / semi-structured / unstructured decisions
+      \item Data-driven / model-driven / knowledge-driven DSS
+      \item Group/communication-driven DSS
+      \item Artificial Intelligence (AI)
+      \item Machine Learning (ML)
+      \item Deep Learning (DL)
+      \item Clinical Decision Support System (CDSS)
+      \item Explainable AI (XAI)
+      \item AutoML
+      \item Human-in-the-loop
+      \item Bias and fairness
+    \end{itemize}
+  \end{multicols}
+\end{frame}
+
+\begin{frame}{Suggested readings (for students)}
+  \begin{itemize}
+    \item DSS overviews in MIS / information systems references.
+    \item ML/DL textbooks (intro to intermediate level).
+    \item Applied papers on ML/DL decision support (healthcare, education, security).
+    \item Trustworthy AI / ethics reports for high-stakes decision making.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Questions}
+  \centering
+  {\Large Q\&A}
+\end{frame}
+
+\end{document}
