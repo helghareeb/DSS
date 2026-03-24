@@ -1,0 +1,66 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+\input{slides/src/common-preamble.sty}
+
+\title[ML in DSS]{Introduction to Machine Learning in DSS}
+\subtitle{Chapter 05}
+\author{Dr.\ Haitham El-Ghareeb}
+\institute{Faculty of Computers and Information Sciences}
+\date{\today}
+
+\begin{document}
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Learning objectives}
+  \begin{itemize}
+    \item Identify common ML problem types in DSS.
+    \item Explain why data preparation and leakage control matter.
+    \item Select evaluation metrics aligned with decisions.
+    \item Connect prediction outputs to actual policy choices.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Common ML tasks in DSS}
+  \begin{itemize}
+    \item Classification for risk or category decisions.
+    \item Regression for continuous outcome prediction.
+    \item Ranking and recommendation for prioritization.
+    \item Anomaly detection and forecasting for operational support.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Data preparation and leakage}
+  \begin{itemize}
+    \item Data quality shapes model quality.
+    \item Feature engineering should respect decision-time availability.
+    \item Leakage leads to unrealistically strong validation results.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Evaluation for decisions}
+  \begin{itemize}
+    \item Accuracy alone is often insufficient.
+    \item Use precision, recall, calibration, and cost-sensitive evaluation.
+    \item Thresholds should reflect capacity and decision consequences.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{From prediction to action}
+  \begin{itemize}
+    \item A probability score is not yet a decision.
+    \item DSS must define thresholds, workflows, and exception handling.
+    \item Explainability improves actionability and trust.
+  \end{itemize}
+\end{frame}
+
+\discussionframe{Why is a highly accurate ML model still insufficient if the
+decision threshold and intervention workflow are poorly designed?}
+
+\begin{frame}{Key takeaways}
+  \begin{itemize}
+    \item Good ML for DSS begins with good problem framing.
+    \item The real objective is decision quality, not model accuracy alone.
+  \end{itemize}
+\end{frame}
+\end{document}

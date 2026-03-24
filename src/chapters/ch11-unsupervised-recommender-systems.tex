@@ -1,0 +1,220 @@
+\chapter{Unsupervised Learning and Recommender Systems for DSS}
+\label{ch:unsupervised-learning-and-recommender-systems-for-dss}
+
+\section{Chapter Overview and Learning Objectives}
+
+Many decision-support problems do not begin with labeled outcomes. Instead,
+they begin with raw operational, textual, or behavioral data where the system
+must first discover structure before it can recommend an action. Unsupervised
+learning methods help DSS identify segments, anomalies, latent topics, and
+behavioral similarities, while recommender systems translate those patterns
+into ranked options for users or managers.
+
+\subsection*{Learning objectives}
+\addcontentsline{toc}{subsection}{Learning objectives}
+By the end of this chapter, the student should be able to:
+\begin{itemize}
+  \item distinguish unsupervised learning from supervised learning in DSS,
+  \item explain how clustering, dimensionality reduction, and association
+  analysis support decision making,
+  \item describe the architecture of a recommender system in a DSS context,
+  \item compare content-based, collaborative, and hybrid recommendation
+  strategies,
+  \item identify evaluation criteria for unsupervised and recommender systems,
+  \item discuss risks such as popularity bias, cold start, and feedback loops.
+\end{itemize}
+
+\section{Unsupervised Learning in DSS}
+
+\subsection{Why unlabeled structure matters}
+In practice, organizations often have abundant data but few reliable labels.
+Unsupervised learning helps DSS answer questions such as:
+\begin{itemize}
+  \item Which customers or students form meaningful segments?
+  \item Which records look unusual enough to review?
+  \item Which variables summarize the main structure of the data?
+\end{itemize}
+
+\subsection{Clustering for segmentation}
+Clustering groups similar records without predefined classes. In DSS,
+clustering is often used for:
+\begin{itemize}
+  \item customer segmentation for differentiated interventions,
+  \item patient grouping for care pathways,
+  \item student grouping for learning support,
+  \item incident grouping for operational triage.
+\end{itemize}
+Common methods include $k$-means, hierarchical clustering, and density-based
+methods such as DBSCAN.
+
+\subsection{Dimensionality reduction}
+High-dimensional data can be difficult to interpret and visualize.
+Dimensionality reduction methods such as Principal Component Analysis (PCA) and
+manifold-learning techniques help summarize the dominant structure of the data.
+In DSS, this can support exploratory analysis, dashboard simplification, and
+feature compression before downstream modeling.
+
+\subsection{Association analysis}
+Association rules discover co-occurrence patterns such as items frequently
+purchased together, services used in sequence, or symptoms commonly observed
+together. While association analysis does not by itself prescribe action, it
+can drive bundling, cross-selling, fraud review, and knowledge discovery.
+
+\section{From Patterns to Decisions}
+
+\subsection{Anomaly and novelty detection}
+Anomaly detection is useful when the objective is to identify cases that merit
+review rather than produce a final automated decision. Examples include:
+\begin{itemize}
+  \item suspicious transactions,
+  \item unusual patient deterioration signals,
+  \item abnormal network events,
+  \item unexpected operational bottlenecks.
+\end{itemize}
+The DSS should treat anomaly scores as prioritization signals and pair them
+with human review workflows.
+
+\subsection{Interpretation challenges}
+Unsupervised models can produce patterns that are mathematically coherent but
+operationally meaningless. For this reason, domain validation is essential:
+\begin{itemize}
+  \item inspect cluster profiles,
+  \item test stability across time and samples,
+  \item confirm that discovered patterns support actual decisions.
+\end{itemize}
+
+\section{Recommender Systems}
+
+\subsection{What a recommender system does}
+A recommender system ranks items, actions, or interventions for a user, group,
+or case. In DSS, recommendation may target:
+\begin{itemize}
+  \item products or services,
+  \item learning resources,
+  \item treatment pathways,
+  \item support actions for at-risk cases.
+\end{itemize}
+
+\subsection{Content-based recommendation}
+Content-based recommenders rely on attributes of items and profiles of users or
+cases. They are useful when rich metadata is available and when explaining the
+recommendation in terms of item attributes is important.
+
+\subsection{Collaborative filtering}
+Collaborative filtering uses similarity in historical behavior across users and
+items. It can reveal patterns not obvious from metadata alone, but it suffers
+from cold-start problems when new users or new items have little interaction
+history.
+
+\subsection{Hybrid recommendation}
+Many production DSS use hybrid recommenders that combine content features,
+interaction history, business rules, and constraints. Hybrid systems are often
+more robust and better aligned with policy requirements.
+
+\section{Evaluation and Governance}
+
+\subsection{Evaluating unsupervised methods}
+Unsupervised methods are evaluated differently from supervised models. Typical
+criteria include:
+\begin{itemize}
+  \item internal structure metrics such as silhouette score,
+  \item stability across runs or time periods,
+  \item interpretability and usefulness to decision makers,
+  \item downstream impact on decisions and interventions.
+\end{itemize}
+
+\subsection{Evaluating recommenders}
+Recommendation quality can be assessed using:
+\begin{itemize}
+  \item ranking metrics such as precision at $k$ and recall at $k$,
+  \item online response metrics such as click-through or acceptance rate,
+  \item diversity and novelty of recommendations,
+  \item fairness and exposure across groups or items.
+\end{itemize}
+
+\subsection{Risks and limitations}
+Important governance issues include:
+\begin{itemize}
+  \item \textbf{Cold start}: insufficient history for new users or items.
+  \item \textbf{Popularity bias}: over-exposure of already popular items.
+  \item \textbf{Feedback loops}: recommendations shape future data.
+  \item \textbf{Filter bubbles}: excessive narrowing of user options.
+  \item \textbf{Opaque segments}: clusters that are hard to justify in practice.
+\end{itemize}
+
+\section{Summary and Concluding Remarks}
+
+This chapter showed how unlabeled data can still support decision making
+through clustering, dimensionality reduction, association analysis, anomaly
+detection, and recommendation. The main design principle is to connect
+discovered structure to concrete actions: segmentation must lead to
+interventions, anomaly scores must feed review queues, and recommendations must
+respect organizational constraints and fairness requirements.
+
+\section{Key Terms}
+\begin{description}[style=nextline]
+  \item[Unsupervised learning] Learning patterns from unlabeled data.
+  \item[Clustering] Grouping similar observations without predefined labels.
+  \item[Dimensionality reduction] Compressing high-dimensional data into a
+  smaller representation while preserving important structure.
+  \item[Association rule] A pattern describing items or events that frequently
+  occur together.
+  \item[Anomaly detection] Identifying unusual records or behaviors that may
+  require review.
+  \item[Recommender system] A system that ranks items or actions for a user or
+  case.
+  \item[Collaborative filtering] Recommendation using shared behavioral
+  patterns across users and items.
+  \item[Content-based recommendation] Recommendation using item and user
+  attributes.
+  \item[Cold start] The difficulty of recommending for new users or items with
+  limited history.
+  \item[Popularity bias] Over-recommending already popular items.
+\end{description}
+
+\section{Multiple-Choice Questions (MCQs)}
+
+\subsection*{Questions}
+\addcontentsline{toc}{subsection}{Questions}
+\begin{enumerate}[label=\textbf{Q\arabic*.}]
+  \item Clustering is most appropriate when:
+  \begin{enumerate}[label=\alph*)]
+    \item class labels are already known
+    \item the DSS needs to discover latent segments in unlabeled data
+    \item the objective is to solve a linear program
+    \item only deterministic rules are allowed
+  \end{enumerate}
+
+  \item A common cold-start problem occurs when:
+  \begin{enumerate}[label=\alph*)]
+    \item there is too much labeled data
+    \item a recommender has little history for new users or items
+    \item clusters overlap perfectly
+    \item dimensionality is low
+  \end{enumerate}
+
+  \item Which issue is most associated with recommender-system feedback loops?
+  \begin{enumerate}[label=\alph*)]
+    \item recommendations change future behavior and future data
+    \item the system cannot rank items
+    \item rule-based reasoning becomes impossible
+    \item all items receive equal exposure
+  \end{enumerate}
+
+  \item PCA is primarily used for:
+  \begin{enumerate}[label=\alph*)]
+    \item human approval workflows
+    \item dimensionality reduction and structure summarization
+    \item legal compliance audits
+    \item backward chaining
+  \end{enumerate}
+\end{enumerate}
+
+\subsection*{Answer Key}
+\addcontentsline{toc}{subsection}{Answer Key}
+\begin{enumerate}[label=\textbf{Q\arabic*.}]
+  \item b
+  \item b
+  \item a
+  \item b
+\end{enumerate}

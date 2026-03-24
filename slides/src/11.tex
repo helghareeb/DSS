@@ -1,0 +1,66 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+\input{slides/src/common-preamble.sty}
+
+\title[Unsupervised DSS]{Unsupervised Learning and Recommender Systems for DSS}
+\subtitle{Chapter 11}
+\author{Dr.\ Haitham El-Ghareeb}
+\institute{Faculty of Computers and Information Sciences}
+\date{\today}
+
+\begin{document}
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Learning objectives}
+  \begin{itemize}
+    \item Explain how unlabeled data supports decisions.
+    \item Use clustering, dimensionality reduction, and anomaly detection.
+    \item Compare content-based, collaborative, and hybrid recommenders.
+    \item Identify recommendation risks such as cold start and popularity bias.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Why unsupervised learning matters}
+  \begin{itemize}
+    \item Many DSS problems start without reliable labels.
+    \item Clustering reveals segments for differentiated action.
+    \item Dimensionality reduction supports exploration and visualization.
+    \item Anomaly detection highlights cases for review.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{From patterns to recommendations}
+  \begin{itemize}
+    \item Content-based recommendation uses attributes.
+    \item Collaborative filtering uses behavior similarity.
+    \item Hybrid recommenders combine signals and constraints.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Evaluation}
+  \begin{itemize}
+    \item Unsupervised methods need stability and usefulness checks.
+    \item Recommenders use ranking metrics and online response measures.
+    \item Fairness and exposure should be monitored explicitly.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Risks}
+  \begin{itemize}
+    \item Cold start for new users or items.
+    \item Popularity bias and feedback loops.
+    \item Clusters that are mathematically valid but operationally meaningless.
+  \end{itemize}
+\end{frame}
+
+\discussionframe{Would you trust an unsupervised segmentation model enough to
+allocate resources automatically? Why or why not?}
+
+\begin{frame}{Key takeaways}
+  \begin{itemize}
+    \item Unsupervised learning is useful when it leads to interpretable action.
+    \item Recommendation systems must be governed, not only optimized.
+  \end{itemize}
+\end{frame}
+\end{document}

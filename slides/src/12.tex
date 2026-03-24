@@ -1,0 +1,68 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+\input{slides/src/common-preamble.sty}
+
+\title[MCDA]{Multi-Criteria Decision Analysis for DSS}
+\subtitle{Chapter 12}
+\author{Dr.\ Haitham El-Ghareeb}
+\institute{Faculty of Computers and Information Sciences}
+\date{\today}
+
+\begin{document}
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Learning objectives}
+  \begin{itemize}
+    \item Explain why many DSS problems are multi-criteria.
+    \item Build a decision matrix and weighted scoring model.
+    \item Describe AHP at a high level.
+    \item Show why sensitivity analysis matters.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Why MCDA?}
+  \begin{itemize}
+    \item Decisions often balance cost, quality, risk, equity, and time.
+    \item MCDA makes trade-offs explicit.
+    \item It supports stakeholder discussion and transparent ranking.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Weighted scoring model}
+  \begin{itemize}
+    \item Define alternatives, criteria, and weights.
+    \item Normalize scores if criteria use different units.
+    \item Aggregate to compare alternatives.
+  \end{itemize}
+  \[
+    S(a)=\sum_{j=1}^{m} w_j x_{aj}
+  \]
+\end{frame}
+
+\begin{frame}{AHP and consistency}
+  \begin{itemize}
+    \item AHP uses pairwise comparisons.
+    \item It is helpful when direct weight assignment is difficult.
+    \item Consistency checking improves judgment quality.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Sensitivity and governance}
+  \begin{itemize}
+    \item Rankings may change when weights change.
+    \item Criteria selection is a policy decision, not only a technical step.
+    \item Fairness and accountability must be reviewed.
+  \end{itemize}
+\end{frame}
+
+\discussionframe{Which is harder to justify in class or in practice: the
+criteria, the weights, or the final ranking? Why?}
+
+\begin{frame}{Key takeaways}
+  \begin{itemize}
+    \item MCDA makes trade-offs visible and reviewable.
+    \item Sensitivity analysis is essential for defensible rankings.
+  \end{itemize}
+\end{frame}
+\end{document}

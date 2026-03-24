@@ -1,0 +1,108 @@
+\chapter{Essay Questions with Model Answers}
+\label{ch:essay-questions-with-model-answers}
+
+\section{How to Use This Chapter}
+
+This chapter is intended for revision, exam preparation, and assignment design.
+Each essay question is followed by a concise model answer outline. The answers
+are not the only acceptable responses; rather, they illustrate the depth,
+structure, and terminology expected in a strong DSS course answer.
+
+\section{Essay Questions and Model Answers}
+
+\subsection*{Essay 1: Explain the difference between MIS, BI, and DSS.}
+\addcontentsline{toc}{subsection}{Essay 1}
+\textbf{Model answer.}
+Management Information Systems (MIS) mainly support routine and structured
+reporting. Business Intelligence (BI) extends this by integrating data,
+defining KPIs, and presenting descriptive and diagnostic analytics through
+dashboards and reports. Decision Support Systems (DSS) go further by supporting
+semi-structured and unstructured decisions through models, scenarios,
+recommendations, and interactive analysis. A modern DSS may use BI as its data
+foundation while adding prediction, optimization, rules, and human-in-the-loop
+workflows.
+
+\subsection*{Essay 2: Why is human-in-the-loop design important in AI-enabled DSS?}
+\addcontentsline{toc}{subsection}{Essay 2}
+\textbf{Model answer.}
+Human-in-the-loop design is important because many DSS decisions are high
+impact, uncertain, and context dependent. AI models can produce useful
+predictions, but they may also be wrong, biased, poorly calibrated, or unable
+to represent policy constraints. Human review provides accountability, domain
+judgment, and exception handling. In well-designed DSS, the system computes and
+prioritizes, while the human validates, overrides when needed, and remains
+responsible for final action.
+
+\subsection*{Essay 3: Discuss the role of model management in DSS.}
+\addcontentsline{toc}{subsection}{Essay 3}
+\textbf{Model answer.}
+Model management is the discipline of organizing, validating, deploying,
+monitoring, and governing the models used in DSS. It covers optimization
+models, simulation models, statistical forecasts, and ML/DL models. Good model
+management ensures that models are versioned, documented, validated against the
+intended decision context, monitored for drift, and linked to appropriate
+approval workflows. Without model management, organizations risk using outdated
+or unreliable models in important decisions.
+
+\subsection*{Essay 4: Compare supervised and unsupervised learning in DSS.}
+\addcontentsline{toc}{subsection}{Essay 4}
+\textbf{Model answer.}
+Supervised learning uses labeled data to predict known outcomes such as class
+labels or numeric targets. In DSS, it supports risk scoring, forecasting, and
+classification. Unsupervised learning works without labels and instead
+discovers structure such as clusters, latent dimensions, associations, or
+anomalies. In DSS, it supports segmentation, exploratory analysis, anomaly
+review, and recommendation. Supervised learning is typically evaluated through
+predictive performance metrics, while unsupervised methods require stability,
+interpretability, and downstream decision usefulness.
+
+\subsection*{Essay 5: How do expert systems differ from machine-learning systems?}
+\addcontentsline{toc}{subsection}{Essay 5}
+\textbf{Model answer.}
+Expert systems represent knowledge explicitly through facts, rules, and an
+inference engine. They are transparent and useful for encoding policy,
+compliance, and expert judgment. Machine-learning systems infer patterns from
+data and are often better at handling complex relationships and large-scale
+prediction. Expert systems are easier to audit but may become brittle when the
+environment changes. ML systems are adaptive but may be less interpretable.
+Modern DSS increasingly combine both approaches in hybrid systems where ML
+produces scores and rules enforce guardrails.
+
+\subsection*{Essay 6: Explain the relationship between BI and DSS.}
+\addcontentsline{toc}{subsection}{Essay 6}
+\textbf{Model answer.}
+BI and DSS are closely related but not identical. BI focuses on collecting,
+integrating, governing, and visualizing data so that organizational performance
+is visible and measurable. DSS uses that information, often together with
+models and expert knowledge, to evaluate alternatives and recommend actions.
+BI answers questions such as ``what happened'' and ``why did it happen,'' while
+DSS increasingly addresses ``what will happen'' and ``what should we do.'' In
+practice, a robust DSS usually depends on strong BI foundations.
+
+\subsection*{Essay 7: Why must fairness, privacy, and accountability be addressed in DSS?}
+\addcontentsline{toc}{subsection}{Essay 7}
+\textbf{Model answer.}
+DSS can materially affect people, resources, and institutional outcomes.
+Fairness matters because biased data, criteria, or models can systematically
+harm particular groups. Privacy matters because decision support often uses
+sensitive personal or organizational data. Accountability matters because
+decisions must be explainable, reviewable, and contestable, especially in
+high-stakes settings. Ethical DSS design therefore requires governance,
+documentation, audit trails, and clearly assigned human responsibility.
+
+\subsection*{Essay 8: What is the value of sensitivity analysis in DSS?}
+\addcontentsline{toc}{subsection}{Essay 8}
+\textbf{Model answer.}
+Sensitivity analysis studies how a recommendation changes when assumptions,
+inputs, thresholds, or weights change. It is valuable because many DSS outputs
+depend on uncertain estimates, subjective preferences, or unstable data.
+Sensitivity analysis helps identify which factors drive the recommendation,
+whether the decision is robust, and where additional information would be most
+useful. It improves both technical confidence and stakeholder trust.
+
+\section{Instructor Notes}
+
+These model answers can be expanded into long-form assignments, oral
+examination prompts, or take-home essay questions. In assessment use, students
+should be expected to provide examples, connect concepts across chapters, and
+argue design trade-offs rather than merely reproduce definitions.

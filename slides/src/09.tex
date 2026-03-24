@@ -1,0 +1,65 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+\input{slides/src/common-preamble.sty}
+
+\title[Expert Systems]{Automated Decision Systems and Expert Systems}
+\subtitle{Chapter 09}
+\author{Dr.\ Haitham El-Ghareeb}
+\institute{Faculty of Computers and Information Sciences}
+\date{\today}
+
+\begin{document}
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Learning objectives}
+  \begin{itemize}
+    \item Explain rule-based and expert-system logic.
+    \item Describe forward and backward chaining.
+    \item Compare expert systems with ML-based DSS.
+    \item Explain why hybrid systems are often preferable.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Knowledge representation}
+  \begin{itemize}
+    \item Facts represent known statements.
+    \item Rules encode IF--THEN logic.
+    \item Ontologies structure concepts and relationships.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Inference and conflict resolution}
+  \begin{itemize}
+    \item Forward chaining starts from facts.
+    \item Backward chaining starts from goals.
+    \item Conflicts are resolved using priority, specificity, or meta-rules.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Hybrid DSS}
+  \begin{itemize}
+    \item ML handles pattern recognition and scoring.
+    \item Rules encode policy, safety, and compliance constraints.
+    \item Hybrid systems improve auditability and guardrail enforcement.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Automation and accountability}
+  \begin{itemize}
+    \item Advisory DSS and human-in-the-loop designs are common.
+    \item High-stakes decisions require documentation and contestability.
+    \item Automation bias must be actively managed.
+  \end{itemize}
+\end{frame}
+
+\discussionframe{For which tasks are explicit rules still better than ML:
+compliance, diagnosis, triage, or recommendation? Explain.}
+
+\begin{frame}{Key takeaways}
+  \begin{itemize}
+    \item Expert systems remain relevant when knowledge must be explicit.
+    \item Hybrid designs are often the strongest practical pattern.
+  \end{itemize}
+\end{frame}
+\end{document}

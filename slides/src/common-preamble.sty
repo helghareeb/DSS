@@ -1,0 +1,23 @@
+\usetheme{Madrid}
+\usecolortheme{default}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{caption}[numbered]
+
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{multicol}
+\usepackage[en-US]{datetime2}
+
+\DTMlangsetup[en-US]{showdayofmonth=false}
+\renewcommand{\today}{\DTMnow}
+
+\newcommand{\keyterm}[1]{\textbf{#1}}
+\newcommand{\discussionframe}[1]{%
+  \begin{frame}{Discussion prompt}
+    \begin{block}{Prompt}
+      #1
+    \end{block}
+  \end{frame}
+}

@@ -1,0 +1,66 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+\input{slides/src/common-preamble.sty}
+
+\title[Model Management]{Model Management}
+\subtitle{Chapter 04}
+\author{Dr.\ Haitham El-Ghareeb}
+\institute{Faculty of Computers and Information Sciences}
+\date{\today}
+
+\begin{document}
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Learning objectives}
+  \begin{itemize}
+    \item Identify the main model types used in DSS.
+    \item Explain the model lifecycle from design to monitoring.
+    \item Distinguish verification from validation.
+    \item Relate model governance to decision risk.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Model types in DSS}
+  \begin{itemize}
+    \item Optimization models for prescriptive decisions.
+    \item Simulation models for uncertainty and what-if analysis.
+    \item Forecasting and statistical models.
+    \item ML and DL models for prediction and pattern discovery.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Lifecycle and governance}
+  \begin{itemize}
+    \item Problem framing, model building, validation, deployment.
+    \item Versioning, documentation, approval, and monitoring.
+    \item Governance artifacts reduce model risk and improve auditability.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Verification vs. validation}
+  \begin{itemize}
+    \item \keyterm{Verification}: did we build the model correctly?
+    \item \keyterm{Validation}: did we build the correct model for the decision?
+    \item Both matter in operational DSS.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Integrated model portfolios}
+  \begin{itemize}
+    \item Forecasts can feed optimizers.
+    \item Rules can constrain ML outputs.
+    \item Simulation can stress-test decision policies before deployment.
+  \end{itemize}
+\end{frame}
+
+\discussionframe{Which model is easier to govern in a high-stakes DSS:
+optimization, simulation, or ML? Explain the trade-off.}
+
+\begin{frame}{Key takeaways}
+  \begin{itemize}
+    \item Model management is not only technical; it is a governance function.
+    \item Strong DSS use model portfolios rather than isolated models.
+  \end{itemize}
+\end{frame}
+\end{document}

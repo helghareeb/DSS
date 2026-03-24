@@ -1,0 +1,179 @@
+\chapter{Multi-Criteria Decision Analysis for DSS}
+\label{ch:multi-criteria-decision-analysis-for-dss}
+
+\section{Chapter Overview and Learning Objectives}
+
+Many important DSS problems cannot be reduced to a single objective. Managers
+often balance cost, quality, risk, fairness, time, and strategic fit at the
+same time. Multi-Criteria Decision Analysis (MCDA) provides structured methods
+for evaluating alternatives when several criteria matter simultaneously.
+
+\subsection*{Learning objectives}
+\addcontentsline{toc}{subsection}{Learning objectives}
+By the end of this chapter, the student should be able to:
+\begin{itemize}
+  \item explain why MCDA is important in semi-structured DSS problems,
+  \item construct a criteria matrix and normalize decision criteria,
+  \item compare weighted scoring, AHP, and outranking-style reasoning at a high
+  level,
+  \item perform sensitivity analysis on criteria weights,
+  \item identify governance risks in criteria design and weighting.
+\end{itemize}
+
+\section{Why Multi-Criteria Methods Matter}
+
+\subsection{Single-objective models are often insufficient}
+Real DSS problems often involve competing objectives:
+\begin{itemize}
+  \item selecting a supplier with trade-offs among cost, quality, and delivery,
+  \item prioritizing projects under risk, benefit, and strategic alignment,
+  \item ranking interventions where effectiveness, equity, and feasibility all
+  matter.
+\end{itemize}
+
+\subsection{Core MCDA workflow}
+A practical MCDA workflow in DSS includes:
+\begin{enumerate}[label=\arabic*.]
+  \item define alternatives,
+  \item define criteria and measurement scales,
+  \item determine directions of preference,
+  \item assign or elicit weights,
+  \item aggregate or compare alternatives,
+  \item test sensitivity and robustness,
+  \item document rationale and final decision.
+\end{enumerate}
+
+\section{Weighted Scoring Models}
+
+\subsection{Decision matrix}
+The starting point is a decision matrix where rows represent alternatives and
+columns represent criteria. Because criteria can have different units,
+normalization is often required before aggregation.
+
+\subsection{Weighted sum model}
+One of the simplest approaches is the weighted sum:
+$$
+S(a) = \sum_{j=1}^{m} w_j x_{aj},
+$$
+where $w_j$ is the weight of criterion $j$ and $x_{aj}$ is the normalized score
+of alternative $a$ on criterion $j$.
+
+\subsection{Strengths and limitations}
+Weighted scoring is transparent and easy to implement in DSS dashboards, but it
+assumes compensability: poor performance on one criterion can be offset by high
+performance on another. In some settings, this is undesirable.
+
+\section{Analytic Hierarchy Process (AHP)}
+
+\subsection{Hierarchical structuring}
+AHP decomposes the problem into goal, criteria, subcriteria, and alternatives.
+Decision makers compare criteria pairwise, which can be more intuitive than
+assigning direct numeric weights.
+
+\subsection{Consistency}
+An advantage of AHP is that it checks the consistency of pairwise judgments. If
+judgments are highly inconsistent, the DSS can prompt the user to revise them
+before ranking alternatives.
+
+\section{Sensitivity and Robustness}
+
+\subsection{Why sensitivity analysis is essential}
+Small changes in weights can reverse rankings. A DSS should therefore expose:
+\begin{itemize}
+  \item how rankings change when weights change,
+  \item which criteria dominate the result,
+  \item where alternatives are nearly tied.
+\end{itemize}
+
+\subsection{Scenario-based MCDA}
+One useful pattern is to define stakeholder-specific or scenario-specific
+weighting schemes. For example, a finance perspective may weight cost more
+heavily, while a service perspective may weight quality and responsiveness more
+heavily.
+
+\section{Governance Considerations}
+
+\subsection{Criteria design is a policy decision}
+MCDA can appear objective while embedding subjective choices. Governance
+therefore requires transparent documentation of:
+\begin{itemize}
+  \item why criteria were selected,
+  \item how weights were chosen,
+  \item who approved the weighting scheme,
+  \item how conflicts are resolved.
+\end{itemize}
+
+\subsection{Fairness and accountability}
+If criteria disadvantage specific groups, the DSS may institutionalize bias.
+Criteria and weights should therefore be reviewed for fairness, legality, and
+organizational legitimacy.
+
+\section{Summary and Concluding Remarks}
+
+MCDA provides a disciplined way to evaluate alternatives when several criteria
+must be balanced. In DSS practice, its value is not only computational but also
+communicative: it makes trade-offs explicit, supports stakeholder discussion,
+and documents why an alternative was ranked highly. The most important design
+principle is transparency in criteria, weights, and sensitivity analysis.
+
+\section{Key Terms}
+\begin{description}[style=nextline]
+  \item[MCDA] Multi-Criteria Decision Analysis; a family of methods for
+  evaluating alternatives across several criteria.
+  \item[Decision matrix] Table of alternatives and their scores on criteria.
+  \item[Normalization] Transforming criteria values to comparable scales.
+  \item[Weight] Relative importance assigned to a criterion.
+  \item[Compensability] The extent to which poor performance on one criterion
+  can be offset by strong performance on another.
+  \item[AHP] Analytic Hierarchy Process; a structured MCDA method using pairwise
+  comparisons.
+  \item[Sensitivity analysis] Studying how changes in assumptions affect the
+  ranking or recommendation.
+\end{description}
+
+\section{Multiple-Choice Questions (MCQs)}
+
+\subsection*{Questions}
+\addcontentsline{toc}{subsection}{Questions}
+\begin{enumerate}[label=\textbf{Q\arabic*.}]
+  \item MCDA is especially useful when:
+  \begin{enumerate}[label=\alph*)]
+    \item there is only one criterion and no constraints
+    \item decision makers must balance multiple competing criteria
+    \item labels are unavailable for clustering
+    \item a rule base replaces all judgment
+  \end{enumerate}
+
+  \item A weighted scoring model requires:
+  \begin{enumerate}[label=\alph*)]
+    \item criteria, scores, and weights
+    \item only a confusion matrix
+    \item only symbolic rules
+    \item no normalization at all
+  \end{enumerate}
+
+  \item Sensitivity analysis helps determine:
+  \begin{enumerate}[label=\alph*)]
+    \item whether rankings are robust to weight changes
+    \item whether a database is normalized
+    \item whether an image classifier is deep enough
+    \item whether all alternatives have equal cost
+  \end{enumerate}
+
+  \item AHP is known for:
+  \begin{enumerate}[label=\alph*)]
+    \item pairwise comparison of criteria and consistency checking
+    \item only using random selection
+    \item ignoring stakeholder judgment
+    \item replacing all decision matrices
+  \end{enumerate}
+\end{enumerate}
+
+\subsection*{Answer Key}
+\addcontentsline{toc}{subsection}{Answer Key}
+\begin{enumerate}[label=\textbf{Q\arabic*.}]
+  \item b
+  \item a
+  \item a
+  \item a
+\end{enumerate}

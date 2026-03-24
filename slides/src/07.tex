@@ -1,0 +1,66 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+\input{slides/src/common-preamble.sty}
+
+\title[Classification Training]{Training of Classification Models}
+\subtitle{Chapter 07}
+\author{Dr.\ Haitham El-Ghareeb}
+\institute{Faculty of Computers and Information Sciences}
+\date{\today}
+
+\begin{document}
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Learning objectives}
+  \begin{itemize}
+    \item Structure classification problems for DSS.
+    \item Use proper train, validation, and test splits.
+    \item Handle imbalance, calibration, and threshold setting.
+    \item Connect error analysis to governance and monitoring.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Problem definition and splitting}
+  \begin{itemize}
+    \item Define labels carefully and respect decision time.
+    \item Use train, validation, and test sets appropriately.
+    \item Time-aware splits matter in operational DSS.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Baselines and pipelines}
+  \begin{itemize}
+    \item Start with simple baselines before complex models.
+    \item Build preprocessing and modeling pipelines together.
+    \item Reproducibility matters for academic and operational use.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Imbalanced learning}
+  \begin{itemize}
+    \item Accuracy can hide poor minority-class performance.
+    \item Use precision, recall, F1, PR curves, and cost-aware metrics.
+    \item Class weights, resampling, and thresholding are common tools.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Calibration and thresholding}
+  \begin{itemize}
+    \item Scores should reflect meaningful probabilities.
+    \item Thresholds should depend on cost, benefit, and operational capacity.
+    \item Decision curves connect model output to policy value.
+  \end{itemize}
+\end{frame}
+
+\discussionframe{Why can the best AUC model still be the wrong model to deploy
+in a real DSS?}
+
+\begin{frame}{Key takeaways}
+  \begin{itemize}
+    \item Classification training is a decision design problem, not only a
+    modeling problem.
+    \item Calibration, thresholding, and monitoring are deployment-critical.
+  \end{itemize}
+\end{frame}
+\end{document}

@@ -1,0 +1,66 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+\input{slides/src/common-preamble.sty}
+
+\title[Supervised Learning]{Supervised Learning for DSS}
+\subtitle{Chapter 08}
+\author{Dr.\ Haitham El-Ghareeb}
+\institute{Faculty of Computers and Information Sciences}
+\date{\today}
+
+\begin{document}
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Learning objectives}
+  \begin{itemize}
+    \item Compare major supervised learning algorithms.
+    \item Explain feature selection and interpretability choices.
+    \item Evaluate models beyond accuracy.
+    \item Describe how supervised models are operationalized in DSS.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Algorithm families}
+  \begin{itemize}
+    \item Linear and generalized linear models.
+    \item Decision trees and ensembles.
+    \item Support Vector Machines.
+    \item Neural networks.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Choosing an algorithm}
+  \begin{itemize}
+    \item Consider data size, interpretability, latency, and governance.
+    \item The most accurate model may not be the most deployable model.
+    \item DSS contexts often reward robustness and explainability.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Feature selection and interpretability}
+  \begin{itemize}
+    \item Feature selection can improve simplicity and reduce leakage risk.
+    \item Interpretability methods support trust and contestability.
+    \item Trade-offs often exist between transparency and raw performance.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Evaluation beyond accuracy}
+  \begin{itemize}
+    \item Use metrics tied to decision objectives.
+    \item Check calibration and communicate uncertainty.
+    \item Evaluate policy performance under resource constraints.
+  \end{itemize}
+\end{frame}
+
+\discussionframe{When would you deliberately choose a less accurate but more
+interpretable model in a DSS?}
+
+\begin{frame}{Key takeaways}
+  \begin{itemize}
+    \item Supervised learning choices must align with the decision context.
+    \item Operational fit and governance are part of model quality.
+  \end{itemize}
+\end{frame}
+\end{document}

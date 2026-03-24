@@ -1,0 +1,69 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+\input{slides/src/common-preamble.sty}
+
+\title[DSS Technology]{Decision Making Technologies and Environment}
+\subtitle{Chapter 03}
+\author{Dr.\ Haitham El-Ghareeb}
+\institute{Faculty of Computers and Information Sciences}
+\date{\today}
+
+\begin{document}
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Learning objectives}
+  \begin{itemize}
+    \item Describe the DSS technology stack.
+    \item Compare on-premises, cloud, hybrid, and edge environments.
+    \item Explain interface patterns for dashboards, alerts, and conversational
+    DSS.
+    \item Identify security, privacy, and governance requirements.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{DSS technology stack}
+  \begin{itemize}
+    \item Data platforms: OLTP, warehouses, lakes.
+    \item Analytics engines and model services.
+    \item Integration patterns using APIs, events, and workflows.
+    \item Interfaces for reports, alerts, and interactive decision support.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Deployment environments}
+  \begin{itemize}
+    \item \keyterm{On-premises}: more control, less elasticity.
+    \item \keyterm{Cloud}: more flexibility, managed services, scaling.
+    \item \keyterm{Hybrid}: practical for regulated organizations.
+    \item \keyterm{Edge}: useful when latency is critical.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Decision support interfaces}
+  \begin{itemize}
+    \item Dashboards support exploration and monitoring.
+    \item Alerts drive timely intervention.
+    \item Conversational interfaces reduce friction for non-technical users.
+    \item Good interface design reduces overload and improves trust.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Security, privacy, and compliance}
+  \begin{itemize}
+    \item Access control, logging, and auditability are mandatory.
+    \item Privacy constraints shape data collection and model design.
+    \item Governance should define ownership, escalation, and approval.
+  \end{itemize}
+\end{frame}
+
+\discussionframe{If you had to deploy a DSS for a hospital or a bank, which
+environment would you choose and why: on-premises, cloud, or hybrid?}
+
+\begin{frame}{Key takeaways}
+  \begin{itemize}
+    \item DSS quality depends on both analytical capability and deployment fit.
+    \item Environment and governance choices affect trust and adoption.
+  \end{itemize}
+\end{frame}
+\end{document}
